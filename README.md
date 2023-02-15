@@ -1,6 +1,15 @@
+1. Command to install dependencies:
+pip3 install gspread google-auth
+
+2. Commant to run a programm:
+python3 run.py
+
+3. Command for deployment to Heroku:
+pip3 freeze > requirements.txt
+
 ![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
 
-Welcome USER_NAME,
+Welcome Sergii-Kostanets,
 
 This is the Code Institute student template for deploying your third portfolio project, the Python command-line project. The last update to this file was: **August 17, 2021**
 
