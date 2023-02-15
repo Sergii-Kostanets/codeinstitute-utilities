@@ -166,7 +166,8 @@ def main():
     """
     """
     print("\nWelcome!")
-    choose_utilitie()
+    while True:
+        choose_utilitie()
 
 
 main()
