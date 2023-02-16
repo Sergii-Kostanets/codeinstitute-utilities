@@ -69,7 +69,7 @@ def get_electricity_data():
                 print("\nEnter the date. Leave blank to enter today's date.")
                 date_input = input(f"Last entered date is: {last_date}. Today is: {today}.\n")
 
-                validated_date = validate_date(date_input)
+                validated_date = validate_date(date_input, last_date)
                 if validated_date:
 
                     while True:
@@ -77,7 +77,7 @@ def get_electricity_data():
                         print("\nEnter the price, €.")
                         price_input = input(f"Leave blank for previous price: {last_price}€.\n")
 
-                        validated_price = validate_price(price_input)
+                        validated_price = validate_price(price_input, last_price)
                         if validated_price:
                             break
 
@@ -91,7 +91,7 @@ def get_electricity_data():
     return calculated_electricity_data
 
 
-def validate_price(value):
+def validate_price(value, last_price):
     """
     Recieves a price as a string.
     Checks if it's empty string, to return previous price.
@@ -99,7 +99,7 @@ def validate_price(value):
     Raises ValueError if strings can not be converted into float.
     Checks if it's not a zero.
     """
-    last_price = SHEET.worksheet('electricity').get_all_values()[-1][2]
+    # last_price = SHEET.worksheet('electricity').get_all_values()[-1][2]
 
     try:
         if value == '':
@@ -121,7 +121,7 @@ def validate_price(value):
         return False
 
 
-def validate_date(value):
+def validate_date(value, last_date):
     """
     Recieves a date as a string.
     Checks if it's empty string, to return today's date.
@@ -130,7 +130,7 @@ def validate_date(value):
     Checks if it's not before last date and after today's date.
     """
     today = date.today().strftime("%d.%m.%Y")
-    last_date = SHEET.worksheet('electricity').get_all_values()[-1][1]
+    # last_date = SHEET.worksheet('electricity').get_all_values()[-1][1]
     date_format = "%d.%m.%Y"
     try:
 
@@ -214,6 +214,18 @@ def update_worksheet_electricity(data):
     print(f"Electricity worksheet updated successfully.\n")
 
 
+def update_worksheet_broadband(data):
+    """
+    Receives a list of data to be inserted into a broadband worksheet.
+    Update the broadband worksheet with the data provided.
+    """
+    print(f"\nUpdating broadband worksheet...\n")
+    worksheet_to_update = SHEET.worksheet('broadband')
+    worksheet_to_update.append_row(data)
+    print(f"Broadband worksheet updated successfully.\n")
+    main()
+
+
 def edit_worksheet(worksheet):
     """
     Choice of the relevant worksheets for editing.
@@ -270,24 +282,70 @@ def add_default(worksheet):
     """
     worksheet_add_default = SHEET.worksheet(worksheet)
 
-    default_data_electricity = [
-        ['meter', 'date', 'price, €', 'consumption, kWh', 'days', 'per day, kWh', 'per day, €'],
-        ['23570.0', '10.01.2023', '0.42', '', '', '', ''],
-        ['23603.8', '14.01.2023', '0.42', '33.8', '4', '8.4', '3.55'],
-        ['23660.0', '17.01.2023', '0.42', '14.6', '1', '14.6', '6.13'],
-        ['23669.0', '18.01.2023', '0.42', '9.0', '1', '9.0', '3.78'],
-        ['23690.0', '19.01.2023', '0.42', '21.0', '1', '21.0', '8.82'],
-        ['23728.5', '23.01.2023', '0.42', '38.5', '4', '9.6', '4.04'],
-        ['23740.0', '24.01.2023', '0.42', '11.5', '1', '11.5', '4.83'],
-        ['23822.6', '31.01.2023', '0.42', '82.6', '7', '11.8', '4.96'],
-        ['23835.6', '01.02.2023', '0.42', '13.0', '1', '13.0', '5.46'],
-        ['23922.2', '09.02.2023', '0.42', '86.6', '8', '10.8', '4.55'],
-        ['23996.0', '16.02.2023', '0.42', '73.8', '7', '10.5', '4.43']
+    if worksheet == 'electricity':
+        default_data = [
+            ['meter', 'date', 'price, €', 'consumption, kWh', 'days', 'per day, kWh', 'per day, €'],
+            ['23570.0', '10.01.2023', '0.42', '', '', '', ''],
+            ['23603.8', '14.01.2023', '0.42', '33.8', '4', '8.4', '3.55'],
+            ['23660.0', '17.01.2023', '0.42', '14.6', '1', '14.6', '6.13'],
+            ['23669.0', '18.01.2023', '0.42', '9.0', '1', '9.0', '3.78'],
+            ['23690.0', '19.01.2023', '0.42', '21.0', '1', '21.0', '8.82'],
+            ['23728.5', '23.01.2023', '0.42', '38.5', '4', '9.6', '4.04'],
+            ['23740.0', '24.01.2023', '0.42', '11.5', '1', '11.5', '4.83'],
+            ['23822.6', '31.01.2023', '0.42', '82.6', '7', '11.8', '4.96'],
+            ['23835.6', '01.02.2023', '0.42', '13.0', '1', '13.0', '5.46'],
+            ['23922.2', '09.02.2023', '0.42', '86.6', '8', '10.8', '4.55'],
+            ['23996.0', '16.02.2023', '0.42', '73.8', '7', '10.5', '4.43']
+            ]
+    elif worksheet == 'broadband':
+        default_data = [
+            ['date', 'price, €', 'days', 'per day, €'],
+            ['15.10.2022', '', '', ''],
+            ['30.11.2022', '61.84', '', ''],
+            ['21.12.2022', '64.14', '', ''],
+            ['17.01.2023', '50.12', '', '']
         ]
+    else:
+        print("Worksheet not found.")
+        main()
 
-    worksheet_add_default.append_rows(default_data_electricity)
+    worksheet_add_default.append_rows(default_data)
     print(f"Default rows on the {worksheet} worksheet have been appended.\n")
     main()
+
+
+def get_broadband_data():
+    """
+    Gets date and price input from the user.
+    Run a while loops to collect a valid data from the user
+    via the terminal, which must be date and price.
+    The loops will repeatedly request data, until it is valid.
+    """
+    while True:
+        today = date.today().strftime("%d.%m.%Y")
+        last_date = SHEET.worksheet('broadband').get_all_values()[-1][0]
+        print("\nPlease enter broadband data.")
+        print("Data should be: date and price per kWh.\n")
+        print("Enter the date. Leave blank to enter today's date.")
+        date_input = input(f"Last entered date is: {last_date}. Today is: {today}.\n")
+
+        validated_date = validate_date(date_input, last_date)
+        if validated_date:
+            while True:
+                last_price = SHEET.worksheet('broadband').get_all_values()[-1][1]
+                print("\nEnter the price, €.")
+                price_input = input(f"Leave blank for previous price: {last_price}€.\n")
+
+                validated_price = validate_price(price_input, last_price)
+                if validated_price:
+                    break
+
+            break
+
+    broadband_data = [str(validated_date), str(validated_price)]
+    # calculated_broadband_data = calculate_broadband_data(broadband_data)
+
+    return broadband_data
 
 
 def choose_utilitie():
@@ -305,14 +363,15 @@ def choose_utilitie():
         print()
         option = input("Enter your choice:\n")
         if option == "1":
-            data = get_electricity_data()
-            update_worksheet_electricity(data)
+            electricity_data = get_electricity_data()
+            update_worksheet_electricity(electricity_data)
             break
         elif option == "2":
             get_food_data()
             break
         elif option == "3":
-            get_broadband_data()
+            broadband_data = get_broadband_data()
+            update_worksheet_broadband(broadband_data)
             break
         elif option == "11":
             worksheet = 'electricity'
@@ -340,3 +399,5 @@ def main():
 
 print("\nWelcome!\n")
 main()
+
+# print(SHEET.worksheet('food').get_all_values())
