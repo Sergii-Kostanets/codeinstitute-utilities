@@ -19,8 +19,6 @@ def calculate_electricity_data(data):
     """
     """
     last_data = SHEET.worksheet('electricity').get_all_values()[-1]
-    print(last_data) # DEL IT
-    print(data) # DEL IT
     # Calculation of how much electricity has been spent since the last measurement
     diff_meter = float(data[0]) - float(last_data[0])
     diff_meter_rounded = round(diff_meter, 1)
@@ -37,12 +35,9 @@ def calculate_electricity_data(data):
     consumption_rounded = round(consumption, 1)
     data.append(str(consumption_rounded))
     # Calculation of the average cost of electricity consumed per day since the last measurement
-    print(data[2]) # DEL IT
     cost = consumption * float(data[2])
     cost_rounded = round(cost, 2)
     data.append(str(cost_rounded))
-
-    print(data) # DELIT
 
     return data
 
@@ -157,11 +152,11 @@ def validate_date(value):
 
         if date_value == last_date_value:
             print(f"Entered date {value} cannot be the same day as last entered day {last_date}.")
-            print("Try again or leave blanc to enter today's date or exit if today is the last entered date.")
+            print("Try again or leave blank to enter today's date or exit if today is the last entered date.")
             return False
 
         if date_value < last_date_value:
-            print(f"Entered date {value} cannot be before last date {last_date}.")
+            print(f"Entered date {value} cannot be before or equal to the last date {last_date}.")
             return False
 
         if date_value > today_value:
