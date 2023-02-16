@@ -61,6 +61,11 @@ def get_electricity_data():
 
 def validate_price(value):
     """
+    Recieves a price as a string.
+    Checks if it's empty string, to return previous price.
+    Inside the try, converts string value into float.
+    Raises ValueError if strings can not be converted into float.
+    Checks if it's not a zero.
     """
     last_price = SHEET.worksheet('electricity').get_all_values()[-1][2]
 
@@ -70,9 +75,14 @@ def validate_price(value):
             print(f"No date provided, entering last known price: {value}€.")
             return value
 
-        value = float(value)
-        print(f"Price {value}€ is valid.")
-        return value
+        float_value = float(value)
+
+        if float_value == 0:
+            print("Electricity cannot be free, please try again.")
+            return False
+
+        print(f"Price {float_value}€ is valid.")
+        return float_value
 
     except ValueError as error:
         print(f"Invalid price: {error}, please try again.")
@@ -81,6 +91,11 @@ def validate_price(value):
 
 def validate_date(value):
     """
+    Recieves a date as a string.
+    Checks if it's empty string, to return today's date.
+    Inside the try, converts string value into date.
+    Raises ValueError if strings can not be converted into date.
+    Checks if it's not before last date and after today's date.
     """
     today = date.today().strftime("%d.%m.%Y")
     last_date = SHEET.worksheet('electricity').get_all_values()[-1][1]
@@ -96,11 +111,11 @@ def validate_date(value):
         today_value = datetime.strptime(today, date_format)
 
         if date_value < last_date_value:
-            print(f"Entered date {value} can not be before last date {last_date}.")
+            print(f"Entered date {value} cannot be before last date {last_date}.")
             return False
 
         if date_value > today_value:
-            print(f"Entered date {value} can not be in the future. Today is {today}.")
+            print(f"Entered date {value} cannot be in the future. Today is {today}.")
             return False
 
         print("Date is valid.")
@@ -117,13 +132,13 @@ def validate_electricity_meter(value):
     try:
         if value == '':
             raise ValueError(
-                "electricity meter value can not be empty"
+                "electricity meter value cannot be empty"
             )
         new_electricity_meter_reading = float(value)
         last_electricity_meter_reading = float(SHEET.worksheet('electricity').get_all_values()[-1][0])
         if new_electricity_meter_reading < last_electricity_meter_reading:
             raise ValueError(
-                f"new electricity meter value {new_electricity_meter_reading} can not be less then previous {last_electricity_meter_reading}"
+                f"new electricity meter value {new_electricity_meter_reading} cannot be less then previous {last_electricity_meter_reading}"
             )
         print("Electricity meter is valid.")
     except ValueError as error:
@@ -146,7 +161,7 @@ def choose_utilitie():
     """
     """
     while True:
-        print("\nEnter 1 to update electricity\nEnter 2 to update food\nEnter 3 to update broadband\n")
+        print("Enter 1 to update electricity\nEnter 2 to update food\nEnter 3 to update broadband\n")
         option = input("Enter your choice:\n")
         if option == "1":
             data = get_electricity_data()
@@ -165,7 +180,7 @@ def choose_utilitie():
 def main():
     """
     """
-    print("\nWelcome!")
+    print("\nWelcome!\n")
     while True:
         choose_utilitie()
 
