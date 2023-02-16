@@ -19,7 +19,32 @@ def calculate_electricity_data(data):
     """
     """
     last_data = SHEET.worksheet('electricity').get_all_values()[-1]
-    print(last_data[0:3]) # DEL IT
+    print(last_data) # DEL IT
+    print(data) # DEL IT
+    # Calculation of how much electricity has been spent since the last measurement
+    diff_meter = float(data[0]) - float(last_data[0])
+    diff_meter_rounded = round(diff_meter, 1)
+    data.append(str(diff_meter_rounded))
+    # Calculation of the number of days since the last measurement
+    date_format = "%d.%m.%Y"
+    prev_date = datetime.strptime(last_data[1], date_format)
+    new_date = datetime.strptime(data[1], date_format)
+    diff_days = new_date - prev_date
+    diff_days_num = diff_days.days
+    data.append(str(diff_days_num))
+    # Calculation of average electricity consumption per day since the last measurement
+    consumption = diff_meter / diff_days_num
+    consumption_rounded = round(consumption, 1)
+    data.append(str(consumption_rounded))
+    # Calculation of the average cost of electricity consumed per day since the last measurement
+    print(data[2]) # DEL IT
+    cost = consumption * float(data[2])
+    cost_rounded = round(cost, 2)
+    data.append(str(cost_rounded))
+
+    print(data) # DELIT
+
+    return data
 
 
 def get_electricity_data():
@@ -62,8 +87,7 @@ def get_electricity_data():
 
             break
 
-    electricity_data = (str(validated_electricity_meter), str(validated_date), str(validated_price))
-
+    electricity_data = [str(validated_electricity_meter), str(validated_date), str(validated_price)]
     calculated_electricity_data = calculate_electricity_data(electricity_data)
 
     return calculated_electricity_data
@@ -111,14 +135,30 @@ def validate_date(value):
     last_date = SHEET.worksheet('electricity').get_all_values()[-1][1]
     date_format = "%d.%m.%Y"
     try:
+
         if value == '':
             value = date.today().strftime(date_format)
+
+            date_value = datetime.strptime(value, date_format)
+            last_date_value = datetime.strptime(last_date, date_format)
+            today_value = datetime.strptime(today, date_format)
+
+            if last_date_value == today_value:
+                print(f"Entered date {value} cannot be the same day as last entered date {last_date}.")
+                print("Come back tomorrow.\n")
+                choose_utilitie()
+
             print(f"No date provided, entering today's date: {value}")
             return value
 
         date_value = datetime.strptime(value, date_format)
         last_date_value = datetime.strptime(last_date, date_format)
         today_value = datetime.strptime(today, date_format)
+
+        if date_value == last_date_value:
+            print(f"Entered date {value} cannot be the same day as last entered day {last_date}.")
+            print("Try again or leave blanc to enter today's date or exit if today is the last entered date.")
+            return False
 
         if date_value < last_date_value:
             print(f"Entered date {value} cannot be before last date {last_date}.")
@@ -202,5 +242,5 @@ def main():
         choose_utilitie()
 
 
-# main()
-calculate_electricity_data(1)
+main()
+# calculate_electricity_data(["24000.3", "16.02.2023", "0.42"])
