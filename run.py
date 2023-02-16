@@ -110,7 +110,7 @@ def validate_price(value, last_price):
         float_value = float(value)
 
         if float_value == 0:
-            print("Electricity cannot be free, please try again.")
+            print("Utility cannot be free, please try again.")
             return False
 
         print(f"Price {float_value}€ is valid.")
@@ -237,17 +237,18 @@ def edit_worksheet(worksheet):
         print("Enter 'delete' to delete last row")
         print("Enter 'delete all' to delete all data")
         print("Enter 'add' to add defaul data")
+        print("Enter 'back' to go back")
         print()
         option = input("Enter your choice:\n")
         if option == "delete":
             delete_last_row(worksheet)
-            break
         elif option == "delete all":
             delete_all(worksheet)
-            break
         elif option == "add":
             add_default(worksheet)
-            break
+        elif option == "back":
+            print()
+            main()
         else:
             print("\nCheck your choice")
 
@@ -386,7 +387,7 @@ def choose_utilitie():
             edit_worksheet(worksheet)
             break
         else:
-            print("\nCheck your choice")
+            print("\nCheck your choice\n")
 
 
 def main():
