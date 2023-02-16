@@ -397,7 +397,7 @@ def main():
         choose_utilitie()
 
 
-print("\nWelcome!\n")
+print("\nWelcome to v.1.1.1!\n")
 main()
 
 # print(SHEET.worksheet('food').get_all_values())
