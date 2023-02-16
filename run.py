@@ -17,6 +17,9 @@ SHEET = GSPREAD_CLIENT.open('codeinstitute-utilities')
 
 def calculate_electricity_data(data):
     """
+    Calculation of the total electricity consumption and the number of days
+    between the last data and the entered ones.
+    Calculation of average electricity consumption per day and cost per day.
     """
     last_data = SHEET.worksheet('electricity').get_all_values()[-1]
     # Calculation of how much electricity has been spent since the last measurement
@@ -63,7 +66,7 @@ def get_electricity_data():
             while True:
                 today = date.today().strftime("%d.%m.%Y")
                 last_date = SHEET.worksheet('electricity').get_all_values()[-1][1]
-                print("Enter the date. Leave blank to enter today's date.")
+                print("\nEnter the date. Leave blank to enter today's date.")
                 date_input = input(f"Last entered date is: {last_date}. Today is: {today}.\n")
 
                 validated_date = validate_date(date_input)
@@ -71,7 +74,7 @@ def get_electricity_data():
 
                     while True:
                         last_price = SHEET.worksheet('electricity').get_all_values()[-1][2]
-                        print("Enter the price, €.")
+                        print("\nEnter the price, €.")
                         price_input = input(f"Leave blank for previous price: {last_price}€.\n")
 
                         validated_price = validate_price(price_input)
@@ -202,6 +205,8 @@ def validate_electricity_meter(value):
 
 def update_worksheet_electricity(data):
     """
+    Receives a list of data to be inserted into an electricity worksheet.
+    Update the electricity worksheet with the data provided.
     """
     print(f"\nUpdating electricity worksheet...\n")
     worksheet_to_update = SHEET.worksheet('electricity')
@@ -209,11 +214,95 @@ def update_worksheet_electricity(data):
     print(f"Electricity worksheet updated successfully.\n")
 
 
-def choose_utilitie():
+def edit_worksheet(worksheet):
     """
+    Choice of the relevant worksheets for editing.
     """
     while True:
-        print("Enter 1 to update electricity\nEnter 2 to update food\nEnter 3 to update broadband\n")
+        print()
+        print(f"Editing mode of {worksheet} worksheet.")
+        print()
+        print("Enter 'delete' to delete last row")
+        print("Enter 'delete all' to delete all data")
+        print("Enter 'add' to add defaul data")
+        print()
+        option = input("Enter your choice:\n")
+        if option == "delete":
+            delete_last_row(worksheet)
+            break
+        elif option == "delete all":
+            delete_all(worksheet)
+            break
+        elif option == "add":
+            add_default(worksheet)
+            break
+        else:
+            print("\nCheck your choice")
+
+
+def delete_last_row(worksheet):
+    """
+    Deleting the last row in the relevant worksheet.
+    """
+    worksheet_del_last = SHEET.worksheet(worksheet)
+    worksheet_all_values = SHEET.worksheet(worksheet).get_all_values()
+    count_rows_data = len(worksheet_all_values)
+    worksheet_del_last.delete_rows(count_rows_data)
+    print(f"The last row on the {worksheet} worksheet has been removed.\n")
+    main()
+
+
+def delete_all(worksheet):
+    """
+    Deleting all data in the relevant worksheet.
+    """
+    worksheet_del_all = SHEET.worksheet(worksheet)
+    worksheet_all_values = SHEET.worksheet(worksheet).get_all_values()
+    count_rows_data = len(worksheet_all_values)
+    worksheet_del_all.delete_rows(1, count_rows_data)
+    print(f"All rows on the {worksheet} worksheet have been removed.\n")
+    main()
+
+
+def add_default(worksheet):
+    """
+    Adding default data in the relevant worksheet.
+    """
+    worksheet_add_default = SHEET.worksheet(worksheet)
+
+    default_data_electricity = [
+        ['meter', 'date', 'price, €', 'consumption, kWh', 'days', 'per day, kWh', 'per day, €'],
+        ['23570.0', '10.01.2023', '0.42', '', '', '', ''],
+        ['23603.8', '14.01.2023', '0.42', '33.8', '4', '8.4', '3.55'],
+        ['23660.0', '17.01.2023', '0.42', '14.6', '1', '14.6', '6.13'],
+        ['23669.0', '18.01.2023', '0.42', '9.0', '1', '9.0', '3.78'],
+        ['23690.0', '19.01.2023', '0.42', '21.0', '1', '21.0', '8.82'],
+        ['23728.5', '23.01.2023', '0.42', '38.5', '4', '9.6', '4.04'],
+        ['23740.0', '24.01.2023', '0.42', '11.5', '1', '11.5', '4.83'],
+        ['23822.6', '31.01.2023', '0.42', '82.6', '7', '11.8', '4.96'],
+        ['23835.6', '01.02.2023', '0.42', '13.0', '1', '13.0', '5.46'],
+        ['23922.2', '09.02.2023', '0.42', '86.6', '8', '10.8', '4.55'],
+        ['23996.0', '16.02.2023', '0.42', '73.8', '7', '10.5', '4.43']
+        ]
+
+    worksheet_add_default.append_rows(default_data_electricity)
+    print(f"Default rows on the {worksheet} worksheet have been appended.\n")
+    main()
+
+
+def choose_utilitie():
+    """
+    Calls the appropriate utility function based on the users selection.
+    """
+    while True:
+        print("Enter 1 to update electricity")
+        print("Enter 2 to update food")
+        print("Enter 3 to update broadband")
+        print()
+        print("Enter 11 to edit electricity")
+        print("Enter 22 to edit food")
+        print("Enter 33 to edit broadband")
+        print()
         option = input("Enter your choice:\n")
         if option == "1":
             data = get_electricity_data()
@@ -225,17 +314,29 @@ def choose_utilitie():
         elif option == "3":
             get_broadband_data()
             break
+        elif option == "11":
+            worksheet = 'electricity'
+            edit_worksheet(worksheet)
+            break
+        elif option == "22":
+            worksheet = 'food'
+            edit_worksheet(worksheet)
+            break
+        elif option == "33":
+            worksheet = 'broadband'
+            edit_worksheet(worksheet)
+            break
         else:
             print("\nCheck your choice")
 
 
 def main():
     """
+    Run all program functions
     """
-    print("\nWelcome!\n")
     while True:
         choose_utilitie()
 
 
+print("\nWelcome!\n")
 main()
-# calculate_electricity_data(["24000.3", "16.02.2023", "0.42"])
