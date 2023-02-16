@@ -15,21 +15,27 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('codeinstitute-utilities')
 
 
-# electricity = SHEET.worksheet('electricity')
+def calculate_electricity_data(data):
+    """
+    """
+    last_data = SHEET.worksheet('electricity').get_all_values()[-1]
+    print(last_data[0:3]) # DEL IT
 
-# data = electricity.get_all_values()
-
-# print(data)
 
 def get_electricity_data():
     """
+    Gets electricity, date and price input from the user.
+    Run a while loops to collect a valid data from the user
+    via the terminal, which must be meter reading, date and price.
+    The loops will repeatedly request data, until it is valid.
     """
     while True:
         print("\nPlease enter electricity data.")
         print("Data should be: meter reading, date and price per kWh.\n")
 
         last_electricity_meter_reading = SHEET.worksheet('electricity').get_all_values()[-1][0]
-        electricity_meter_reading = input(f"Enter meter reading.\nPrevious value: {last_electricity_meter_reading}\n")
+        print("Enter meter reading.")
+        electricity_meter_reading = input(f"Previous value: {last_electricity_meter_reading}.\n")
 
         validated_electricity_meter = validate_electricity_meter(electricity_meter_reading)
         if validated_electricity_meter:
@@ -37,14 +43,16 @@ def get_electricity_data():
             while True:
                 today = date.today().strftime("%d.%m.%Y")
                 last_date = SHEET.worksheet('electricity').get_all_values()[-1][1]
-                date_input = input(f"Enter the date (optional, leave blank to enter today's date).\nLast entered date is: {last_date}. Today is: {today}.\n")
+                print("Enter the date. Leave blank to enter today's date.")
+                date_input = input(f"Last entered date is: {last_date}. Today is: {today}.\n")
 
                 validated_date = validate_date(date_input)
                 if validated_date:
 
                     while True:
                         last_price = SHEET.worksheet('electricity').get_all_values()[-1][2]
-                        price_input = input(f"Enter the price, € (optional, leave blank to enter the previous price: {last_price}€).\n")
+                        print("Enter the price, €.")
+                        price_input = input(f"Leave blank for previous price: {last_price}€.\n")
 
                         validated_price = validate_price(price_input)
                         if validated_price:
@@ -56,7 +64,9 @@ def get_electricity_data():
 
     electricity_data = (str(validated_electricity_meter), str(validated_date), str(validated_price))
 
-    return electricity_data
+    calculated_electricity_data = calculate_electricity_data(electricity_data)
+
+    return calculated_electricity_data
 
 
 def validate_price(value):
@@ -128,19 +138,26 @@ def validate_date(value):
 
 def validate_electricity_meter(value):
     """
+    Recieves a date as a string. Inside the try,
+    checks if it's not empty string, and then converts it to float.
+    Raises ValueError if string can not be converted into float.
+    Checks if it's not less than previous meter reading.
     """
     try:
         if value == '':
             raise ValueError(
                 "electricity meter value cannot be empty"
             )
+
         new_electricity_meter_reading = float(value)
         last_electricity_meter_reading = float(SHEET.worksheet('electricity').get_all_values()[-1][0])
+
         if new_electricity_meter_reading < last_electricity_meter_reading:
             raise ValueError(
                 f"new electricity meter value {new_electricity_meter_reading} cannot be less then previous {last_electricity_meter_reading}"
             )
         print("Electricity meter is valid.")
+
     except ValueError as error:
         print(f"Invalid data: {error}, please try again.")
         return False
@@ -185,4 +202,5 @@ def main():
         choose_utilitie()
 
 
-main()
+# main()
+calculate_electricity_data(1)
