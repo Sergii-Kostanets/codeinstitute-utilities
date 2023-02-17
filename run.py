@@ -23,36 +23,45 @@ def main():
         choose_utilitie()
 
 
-def calculate_electricity_data(data):
+def choose_utilitie():
     """
-    Calculation of the total electricity consumption and the number of days
-    between the last data and the entered ones.
-    Calculation of average electricity consumption per day and cost per day.
+    Calls the appropriate utility function based on the users selection.
     """
-    print("\nCalculating...")
-    last_data = SHEET.worksheet('electricity').get_all_values()[-1]
-    # Calculation of how much electricity has been spent since the last measurement
-    diff_meter = float(data[0]) - float(last_data[0])
-    diff_meter_rounded = round(diff_meter, 1)
-    data.append(str(diff_meter_rounded))
-    # Calculation of the number of days since the last measurement
-    date_format = "%d.%m.%Y"
-    prev_date = datetime.strptime(last_data[1], date_format)
-    new_date = datetime.strptime(data[1], date_format)
-    diff_days = new_date - prev_date
-    diff_days_num = diff_days.days
-    data.append(str(diff_days_num))
-    # Calculation of average electricity consumption per day since the last measurement
-    consumption = diff_meter / diff_days_num
-    consumption_rounded = round(consumption, 1)
-    data.append(str(consumption_rounded))
-    # Calculation of the average cost of electricity consumed per day since the last measurement
-    cost = consumption * float(data[2])
-    cost_rounded = round(cost, 2)
-    data.append(str(cost_rounded))
-    print("\nCalculation finished.")
-
-    return data
+    while True:
+        print("Enter 1 to update electricity")
+        print("Enter 2 to update food")
+        print("Enter 3 to update broadband")
+        print()
+        print("Enter 11 to edit electricity")
+        print("Enter 22 to edit food")
+        print("Enter 33 to edit broadband")
+        print()
+        option = input("Enter your choice:\n")
+        if option == "1":
+            electricity_data = get_electricity_data()
+            update_worksheet_electricity(electricity_data)
+            break
+        elif option == "2":
+            get_food_data()
+            break
+        elif option == "3":
+            broadband_data = get_broadband_data()
+            update_worksheet_broadband(broadband_data)
+            break
+        elif option == "11":
+            worksheet = 'electricity'
+            edit_worksheet(worksheet)
+            break
+        elif option == "22":
+            worksheet = 'food'
+            edit_worksheet(worksheet)
+            break
+        elif option == "33":
+            worksheet = 'broadband'
+            edit_worksheet(worksheet)
+            break
+        else:
+            print("\nCheck your choice\n")
 
 
 def get_electricity_data():
@@ -99,6 +108,141 @@ def get_electricity_data():
     calculated_electricity_data = calculate_electricity_data(electricity_data)
 
     return calculated_electricity_data
+
+
+def get_food_data():
+    """
+    WRITE THIS
+    """
+    print(SHEET.worksheet('food').get_all_values())
+    main()
+
+
+def get_broadband_data():
+    """
+    Gets date and price input from the user.
+    Run a while loops to collect a valid data from the user
+    via the terminal, which must be date and price.
+    The loops will repeatedly request data, until it is valid.
+    """
+    while True:
+        today = date.today().strftime("%d.%m.%Y")
+        last_date = SHEET.worksheet('broadband').get_all_values()[-1][0]
+        print("\nPlease enter broadband data.")
+        print("Data should be: date and price from last bill.\n")
+        print("Enter the date. Leave blank to enter today's date.")
+        date_input = input(f"Last entered date is: {last_date}. Today is: {today}.\n")
+
+        validated_date = validate_date(date_input, last_date)
+        if validated_date:
+            while True:
+                last_price = SHEET.worksheet('broadband').get_all_values()[-1][1]
+                print("\nEnter the price, €.")
+                price_input = input(f"Leave blank for previous price: {last_price}€.\n")
+
+                validated_price = validate_price(price_input, last_price)
+                if validated_price:
+                    break
+
+            break
+
+    broadband_data = [str(validated_date), str(validated_price)]
+    calculated_broadband_data = calculate_broadband_data(broadband_data)
+
+    return calculated_broadband_data
+
+
+def calculate_electricity_data(data):
+    """
+    Calculation of the total electricity consumption and the number of days
+    between the last data and the entered ones.
+    Calculation of average electricity consumption per day and cost per day.
+    """
+    print("\nCalculating...")
+    last_data = SHEET.worksheet('electricity').get_all_values()[-1]
+    # Calculation of how much electricity has been spent since the last measurement
+    diff_meter = float(data[0]) - float(last_data[0])
+    diff_meter_rounded = round(diff_meter, 1)
+    data.append(str(diff_meter_rounded))
+    # Calculation of the number of days since the last measurement
+    date_format = "%d.%m.%Y"
+    prev_date = datetime.strptime(last_data[1], date_format)
+    new_date = datetime.strptime(data[1], date_format)
+    diff_days = new_date - prev_date
+    diff_days_num = diff_days.days
+    data.append(str(diff_days_num))
+    # Calculation of average electricity consumption per day since the last measurement
+    consumption = diff_meter / diff_days_num
+    consumption_rounded = round(consumption, 1)
+    data.append(str(consumption_rounded))
+    # Calculation of the average cost of electricity consumed per day since the last measurement
+    cost = consumption * float(data[2])
+    cost_rounded = round(cost, 2)
+    data.append(str(cost_rounded))
+    print("\nCalculation finished.")
+
+    return data
+
+
+def calculate_broadband_data(data):
+    """
+    Calculation of the number of days between bills for broadband
+    and the price of broadband per day.
+    """
+    print("\nCalculating...")
+    last_data = SHEET.worksheet('broadband').get_all_values()[-1]
+    price = SHEET.worksheet('broadband').get_all_values()[-1]
+    # Calculation of how much electricity has been spent since the last measurement
+        # diff_meter = float(data[0]) - float(last_data[0])
+        # diff_meter_rounded = round(diff_meter, 1)
+        # data.append(str(diff_meter_rounded))
+    # Calculation of the number of days since the last bill
+    date_format = "%d.%m.%Y"
+    prev_date = datetime.strptime(last_data[0], date_format)
+    new_date = datetime.strptime(data[0], date_format)
+    diff_days = new_date - prev_date
+    diff_days_num = diff_days.days
+    data.append(str(diff_days_num))
+    # Calculation of average broadband price per day
+    consumption = float(price[1]) / diff_days_num
+    consumption_rounded = round(consumption, 2)
+    data.append(str(consumption_rounded))
+    # Calculation of the average cost of electricity consumed per day since the last measurement
+        # cost = consumption * float(data[2])
+        # cost_rounded = round(cost, 2)
+        # data.append(str(cost_rounded))
+    print("\nCalculation finished.")
+
+    return data
+
+
+def validate_electricity_meter(value):
+    """
+    Recieves a date as a string. Inside the try,
+    checks if it's not empty string, and then converts it to float.
+    Raises ValueError if string can not be converted into float.
+    Checks if it's not less than previous meter reading.
+    """
+    try:
+        if value == '':
+            raise ValueError(
+                "electricity meter value cannot be empty"
+            )
+
+        new_electricity_meter_reading = float(value)
+        last_electricity_meter_reading = float(SHEET.worksheet('electricity').get_all_values()[-1][0])
+
+        if new_electricity_meter_reading < last_electricity_meter_reading:
+            raise ValueError(
+                f"new electricity meter value {new_electricity_meter_reading} cannot be less then previous {last_electricity_meter_reading}"
+            )
+        print("Electricity meter is valid.")
+
+    except ValueError as error:
+        print(f"Invalid data: {error}, please try again.")
+        return False
+
+    return new_electricity_meter_reading
 
 
 def validate_price(value, last_price):
@@ -179,35 +323,6 @@ def validate_date(value, last_date):
     except ValueError as error:
         print(f"Invalid data: {error}, please try again.")
         return False
-
-
-def validate_electricity_meter(value):
-    """
-    Recieves a date as a string. Inside the try,
-    checks if it's not empty string, and then converts it to float.
-    Raises ValueError if string can not be converted into float.
-    Checks if it's not less than previous meter reading.
-    """
-    try:
-        if value == '':
-            raise ValueError(
-                "electricity meter value cannot be empty"
-            )
-
-        new_electricity_meter_reading = float(value)
-        last_electricity_meter_reading = float(SHEET.worksheet('electricity').get_all_values()[-1][0])
-
-        if new_electricity_meter_reading < last_electricity_meter_reading:
-            raise ValueError(
-                f"new electricity meter value {new_electricity_meter_reading} cannot be less then previous {last_electricity_meter_reading}"
-            )
-        print("Electricity meter is valid.")
-
-    except ValueError as error:
-        print(f"Invalid data: {error}, please try again.")
-        return False
-
-    return new_electricity_meter_reading
 
 
 def update_worksheet_electricity(data):
@@ -323,121 +438,7 @@ def add_default(worksheet):
     main()
 
 
-def get_broadband_data():
-    """
-    Gets date and price input from the user.
-    Run a while loops to collect a valid data from the user
-    via the terminal, which must be date and price.
-    The loops will repeatedly request data, until it is valid.
-    """
-    while True:
-        today = date.today().strftime("%d.%m.%Y")
-        last_date = SHEET.worksheet('broadband').get_all_values()[-1][0]
-        print("\nPlease enter broadband data.")
-        print("Data should be: date and price from last bill.\n")
-        print("Enter the date. Leave blank to enter today's date.")
-        date_input = input(f"Last entered date is: {last_date}. Today is: {today}.\n")
-
-        validated_date = validate_date(date_input, last_date)
-        if validated_date:
-            while True:
-                last_price = SHEET.worksheet('broadband').get_all_values()[-1][1]
-                print("\nEnter the price, €.")
-                price_input = input(f"Leave blank for previous price: {last_price}€.\n")
-
-                validated_price = validate_price(price_input, last_price)
-                if validated_price:
-                    break
-
-            break
-
-    broadband_data = [str(validated_date), str(validated_price)]
-    calculated_broadband_data = calculate_broadband_data(broadband_data)
-
-    return calculated_broadband_data
-
-
-def calculate_broadband_data(data):
-    """
-    Calculation of the number of days between bills for broadband
-    and the price of broadband per day.
-    """
-    print("\nCalculating...")
-    last_data = SHEET.worksheet('broadband').get_all_values()[-1]
-    price = SHEET.worksheet('broadband').get_all_values()[-1]
-    # Calculation of how much electricity has been spent since the last measurement
-        # diff_meter = float(data[0]) - float(last_data[0])
-        # diff_meter_rounded = round(diff_meter, 1)
-        # data.append(str(diff_meter_rounded))
-    # Calculation of the number of days since the last bill
-    date_format = "%d.%m.%Y"
-    prev_date = datetime.strptime(last_data[0], date_format)
-    new_date = datetime.strptime(data[0], date_format)
-    diff_days = new_date - prev_date
-    diff_days_num = diff_days.days
-    data.append(str(diff_days_num))
-    # Calculation of average broadband price per day
-    consumption = float(price[1]) / diff_days_num
-    consumption_rounded = round(consumption, 2)
-    data.append(str(consumption_rounded))
-    # Calculation of the average cost of electricity consumed per day since the last measurement
-        # cost = consumption * float(data[2])
-        # cost_rounded = round(cost, 2)
-        # data.append(str(cost_rounded))
-    print("\nCalculation finished.")
-
-    return data
-
-
-def get_food_data():
-    """
-    WRITE THIS
-    """
-    print(SHEET.worksheet('food').get_all_values())
-
-
-def choose_utilitie():
-    """
-    Calls the appropriate utility function based on the users selection.
-    """
-    while True:
-        print("Enter 1 to update electricity")
-        print("Enter 2 to update food")
-        print("Enter 3 to update broadband")
-        print()
-        print("Enter 11 to edit electricity")
-        print("Enter 22 to edit food")
-        print("Enter 33 to edit broadband")
-        print()
-        option = input("Enter your choice:\n")
-        if option == "1":
-            electricity_data = get_electricity_data()
-            update_worksheet_electricity(electricity_data)
-            break
-        elif option == "2":
-            get_food_data()
-            break
-        elif option == "3":
-            broadband_data = get_broadband_data()
-            update_worksheet_broadband(broadband_data)
-            break
-        elif option == "11":
-            worksheet = 'electricity'
-            edit_worksheet(worksheet)
-            break
-        elif option == "22":
-            worksheet = 'food'
-            edit_worksheet(worksheet)
-            break
-        elif option == "33":
-            worksheet = 'broadband'
-            edit_worksheet(worksheet)
-            break
-        else:
-            print("\nCheck your choice\n")
-
-
-print("\nWelcome to v.1.2.3!\n")
+print("\nWelcome to v.1.2.4!\n")
 main()
 
 
