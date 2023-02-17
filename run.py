@@ -15,6 +15,14 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('codeinstitute-utilities')
 
 
+def main():
+    """
+    Run all program functions
+    """
+    while True:
+        choose_utilitie()
+
+
 def calculate_electricity_data(data):
     """
     Calculation of the total electricity consumption and the number of days
@@ -207,10 +215,10 @@ def update_worksheet_electricity(data):
     Receives a list of data to be inserted into an electricity worksheet.
     Update the electricity worksheet with the data provided.
     """
-    print(f"\nUpdating electricity worksheet...\n")
+    print("\nUpdating electricity worksheet...\n")
     worksheet_to_update = SHEET.worksheet('electricity')
     worksheet_to_update.append_row(data)
-    print(f"Electricity worksheet updated successfully.\n")
+    print("Electricity worksheet updated successfully.\n")
 
 
 def update_worksheet_broadband(data):
@@ -218,10 +226,10 @@ def update_worksheet_broadband(data):
     Receives a list of data to be inserted into a broadband worksheet.
     Update the broadband worksheet with the data provided.
     """
-    print(f"\nUpdating broadband worksheet...\n")
+    print("\nUpdating broadband worksheet...\n")
     worksheet_to_update = SHEET.worksheet('broadband')
     worksheet_to_update.append_row(data)
-    print(f"Broadband worksheet updated successfully.\n")
+    print("Broadband worksheet updated successfully.\n")
     main()
 
 
@@ -301,10 +309,11 @@ def add_default(worksheet):
         default_data = [
             ['date', 'price, €', 'days', 'per day, €'],
             ['15.10.2022', '', '', ''],
-            ['30.11.2022', '61.84', '', ''],
-            ['21.12.2022', '64.14', '', ''],
-            ['17.01.2023', '50.12', '', '']
-        ]
+            ['30.11.2022', '61.84', '46', '1.34'],
+            ['21.12.2022', '64.14', '21', '2.94'],
+            ['17.01.2023', '50.12', '27', '2.38'],
+            ['04.02.2023', '33.54', '18', '2.78']
+            ]
     else:
         print("Worksheet not found.")
         main()
@@ -380,6 +389,13 @@ def calculate_broadband_data(data):
     return data
 
 
+def get_food_data():
+    """
+    WRITE THIS
+    """
+    print(SHEET.worksheet('food').get_all_values())
+
+
 def choose_utilitie():
     """
     Calls the appropriate utility function based on the users selection.
@@ -421,15 +437,8 @@ def choose_utilitie():
             print("\nCheck your choice\n")
 
 
-def main():
-    """
-    Run all program functions
-    """
-    while True:
-        choose_utilitie()
-
-
-print("\nWelcome to v.1.2.2!\n")
+print("\nWelcome to v.1.2.3!\n")
 main()
 
-# print(SHEET.worksheet('food').get_all_values())
+
+# print(SHEET.worksheet('broadband').get_all_values())
