@@ -3,6 +3,7 @@ from datetime import datetime
 import gspread
 from google.oauth2.service_account import Credentials
 
+
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
     "https://www.googleapis.com/auth/drive.file",
@@ -27,37 +28,76 @@ def choose_utilitie():
     """
     Calls the appropriate utility function based on the users selection.
     """
+    utility = [
+        ["1", "electricity"],
+        ["2", "food"],
+        ["3", "broadband"]
+        ]
     while True:
-        print("Enter 1 to update electricity")
-        print("Enter 2 to update food")
-        print("Enter 3 to update broadband")
-        print()
-        print("Enter 11 to edit electricity")
-        print("Enter 22 to edit food")
-        print("Enter 33 to edit broadband")
+        print(f"Enter '{utility[0][0]}' to update {utility[0][1]}")
+        print(f"Enter '{utility[1][0]}' to update {utility[1][1]}")
+        print(f"Enter '{utility[2][0]}' to update {utility[2][1]}")
         print()
         option = input("Enter your choice:\n")
-        if option == "1":
-            electricity_data = get_electricity_data()
-            update_worksheet_electricity(electricity_data)
-        elif option == "2":
-            food_data = get_food_data()
-            update_worksheet_food(food_data)
-        elif option == "3":
-            broadband_data = get_broadband_data()
-            update_worksheet_broadband(broadband_data)
-        elif option == "11":
-            worksheet = 'electricity'
-            edit_worksheet(worksheet)
-        elif option == "22":
-            worksheet = 'food'
-            edit_worksheet(worksheet)
-        elif option == "33":
-            worksheet = 'broadband'
-            edit_worksheet(worksheet)
+        if option == utility[0][0]:
+            edit_worksheet(utility[0][1])
+        elif option == utility[1][0]:
+            edit_worksheet(utility[1][1])
+        elif option == utility[2][0]:
+            edit_worksheet(utility[2][1])
         else:
             print("\nCheck your choice\n")
 
+
+def edit_worksheet(worksheet):
+    """
+    Choice of the relevant worksheets for editing.
+    """
+    action = [
+        ['1', 'add one row'],
+        ['2', 'delete last row'],
+        ['3', 'delete all rows'],
+        ['4', 'add default data'],
+        ['5', 'go back']
+        ]
+    while True:
+        print()
+        print(f"Editing mode of {worksheet} worksheet.")
+        print()
+        print(f"Enter '{action[0][0]}' to {action[0][1]}.")
+        print(f"Enter '{action[1][0]}' to {action[1][1]}.")
+        print(f"Enter '{action[2][0]}' to {action[2][1]}.")
+        print(f"Enter '{action[3][0]}' to {action[3][1]}.")
+        print(f"Enter '{action[4][0]}' to {action[4][1]}.")
+        print()
+        option = input("Enter your choice:\n")
+        if option == action[0][0]:
+            # REWRITE IT _________ !!!!!!!
+            if worksheet == 'electricity':
+                electricity_data = get_electricity_data()
+                update_worksheet_electricity(electricity_data)
+            elif worksheet == 'food':
+                food_data = get_food_data()
+                update_worksheet_food(food_data)
+            elif worksheet == 'broadband':
+                broadband_data = get_broadband_data()
+                update_worksheet_broadband(broadband_data)
+            else:
+                print(f"Worksheet {worksheet} not found!")
+                main()
+        elif option == action[1][0]:
+            delete_last_row(worksheet)
+        elif option == action[2][0]:
+            delete_all(worksheet)
+        elif option == action[3][0]:
+            add_default(worksheet)
+        elif option == action[4][0]:
+            print()
+            main()
+        else:
+            print("\nCheck your choice")
+
+# Merge !!! get finctions
 
 def get_electricity_data():
     """
@@ -172,6 +212,7 @@ def get_broadband_data():
 
     return calculated_broadband_data
 
+# Merge !!! calculate functions
 
 def calculate_electricity_data(data):
     """
@@ -268,6 +309,7 @@ def calculate_broadband_data(data):
 
     return data
 
+# Validate functions
 
 def validate_electricity_meter(value):
     """
@@ -377,6 +419,7 @@ def validate_date(value, last_date):
         print(f"Invalid data: {error}, please try again.")
         return False
 
+# Merge !!! update functions
 
 def update_worksheet_electricity(data):
     """
@@ -386,8 +429,8 @@ def update_worksheet_electricity(data):
     print("\nUpdating electricity worksheet...\n")
     worksheet_to_update = SHEET.worksheet('electricity')
     worksheet_to_update.append_row(data)
-    print("Electricity worksheet updated successfully.\n")
-    main()
+    print("Electricity worksheet updated successfully.")
+    edit_worksheet('electricity')
 
 
 def update_worksheet_broadband(data):
@@ -398,8 +441,8 @@ def update_worksheet_broadband(data):
     print("\nUpdating broadband worksheet...\n")
     worksheet_to_update = SHEET.worksheet('broadband')
     worksheet_to_update.append_row(data)
-    print("Broadband worksheet updated successfully.\n")
-    main()
+    print("Broadband worksheet updated successfully.")
+    edit_worksheet('broadband')
 
 
 def update_worksheet_food(data):
@@ -410,35 +453,8 @@ def update_worksheet_food(data):
     print("\nUpdating food worksheet...\n")
     worksheet_to_update = SHEET.worksheet('food')
     worksheet_to_update.append_row(data)
-    print("Food worksheet updated successfully.\n")
-    main()
-
-
-def edit_worksheet(worksheet):
-    """
-    Choice of the relevant worksheets for editing.
-    """
-    while True:
-        print()
-        print(f"Editing mode of {worksheet} worksheet.")
-        print()
-        print("Enter 'delete' to delete last row")
-        print("Enter 'delete all' to delete all data")
-        print("Enter 'add' to add defaul data")
-        print("Enter 'back' to go back")
-        print()
-        option = input("Enter your choice:\n")
-        if option == "delete":
-            delete_last_row(worksheet)
-        elif option == "delete all":
-            delete_all(worksheet)
-        elif option == "add":
-            add_default(worksheet)
-        elif option == "back":
-            print()
-            main()
-        else:
-            print("\nCheck your choice")
+    print("Food worksheet updated successfully.")
+    edit_worksheet('food')
 
 
 def delete_last_row(worksheet):
@@ -449,8 +465,8 @@ def delete_last_row(worksheet):
     worksheet_all_values = SHEET.worksheet(worksheet).get_all_values()
     count_rows_data = len(worksheet_all_values)
     worksheet_del_last.delete_rows(count_rows_data)
-    print(f"The last row on the {worksheet} worksheet has been removed.\n")
-    main()
+    print(f"The last row on the {worksheet} worksheet has been removed.")
+    edit_worksheet(worksheet)
 
 
 def delete_all(worksheet):
@@ -461,8 +477,8 @@ def delete_all(worksheet):
     worksheet_all_values = SHEET.worksheet(worksheet).get_all_values()
     count_rows_data = len(worksheet_all_values)
     worksheet_del_all.delete_rows(1, count_rows_data)
-    print(f"All rows on the {worksheet} worksheet have been removed.\n")
-    main()
+    print(f"All rows on the {worksheet} worksheet have been removed.")
+    edit_worksheet(worksheet)
 
 
 def add_default(worksheet):
@@ -508,11 +524,11 @@ def add_default(worksheet):
         main()
 
     worksheet_add_default.append_rows(default_data)
-    print(f"Default rows on the {worksheet} worksheet have been appended.\n")
-    main()
+    print(f"Default rows on the {worksheet} worksheet have been appended.")
+    edit_worksheet(worksheet)
 
 
-print("\nWelcome to v.1.2.4!\n")
+print("\nWelcome to v.1.3.4!\n")
 main()
 
 
