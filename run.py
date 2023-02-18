@@ -72,16 +72,15 @@ def edit_worksheet(worksheet):
         print()
         option = input("Enter your choice:\n")
         if option == action[0][0]:
-            # REWRITE IT _________ !!!!!!!
             if worksheet == 'electricity':
-                electricity_data = get_electricity_data()
-                update_worksheet_electricity(electricity_data)
+                data = get_electricity_data(worksheet)
+                update_worksheet(data, worksheet)
             elif worksheet == 'food':
-                food_data = get_food_data()
-                update_worksheet_food(food_data)
+                data = get_food_data(worksheet)
+                update_worksheet(data, worksheet)
             elif worksheet == 'broadband':
-                broadband_data = get_broadband_data()
-                update_worksheet_broadband(broadband_data)
+                data = get_broadband_data(worksheet)
+                update_worksheet(data, worksheet)
             else:
                 print(f"Worksheet {worksheet} not found!")
                 main()
@@ -99,7 +98,7 @@ def edit_worksheet(worksheet):
 
 # Merge !!! get finctions
 
-def get_electricity_data():
+def get_electricity_data(worksheet):
     """
     Gets electricity, date and price input from the user.
     Run a while loops to collect a valid data from the user
@@ -140,12 +139,12 @@ def get_electricity_data():
             break
 
     electricity_data = [str(validated_electricity_meter), str(validated_date), str(validated_price)]
-    calculated_electricity_data = calculate_electricity_data(electricity_data)
+    calculated_electricity_data = calculate_data(electricity_data, worksheet)
 
     return calculated_electricity_data
 
 
-def get_food_data():
+def get_food_data(worksheet):
     """
     Gets date and price input from the user.
     Run a while loops to collect a valid data from the user
@@ -174,12 +173,12 @@ def get_food_data():
             break
 
     food_data = [str(validated_date), str(validated_price)]
-    calculated_food_data = calculate_food_data(food_data)
+    calculated_food_data = calculate_data(food_data, worksheet)
 
     return calculated_food_data
 
 
-def get_broadband_data():
+def get_broadband_data(worksheet):
     """
     Gets date and price input from the user.
     Run a while loops to collect a valid data from the user
@@ -208,103 +207,50 @@ def get_broadband_data():
             break
 
     broadband_data = [str(validated_date), str(validated_price)]
-    calculated_broadband_data = calculate_broadband_data(broadband_data)
+    calculated_broadband_data = calculate_data(broadband_data, worksheet)
 
     return calculated_broadband_data
 
-# Merge !!! calculate functions
+# Calculate function (MAKE IT BETTER)
 
-def calculate_electricity_data(data):
+def calculate_data(data, worksheet):
     """
-    Calculation of the total electricity consumption and the number of days
-    between the last data and the entered ones.
-    Calculation of average electricity consumption per day and cost per day.
+    Calculation of the total utility consumption and the number of days
+    between the last data and the entered one.
+    Calculation of average utility consumption per day and cost per day.
     """
     print("\nCalculating...")
-    last_data = SHEET.worksheet('electricity').get_all_values()[-1]
-    # Calculation of how much electricity has been spent since the last measurement
-    diff_meter = float(data[0]) - float(last_data[0])
-    diff_meter_rounded = round(diff_meter, 1)
-    data.append(str(diff_meter_rounded))
-    # Calculation of the number of days since the last measurement
+    last_data = SHEET.worksheet(worksheet).get_all_values()[-1]
+    if worksheet == 'electricity':
+        # Calculation of how much electricity has been spent since the last measurement
+        diff_meter = float(data[0]) - float(last_data[0])
+        diff_meter_rounded = round(diff_meter, 1)
+        data.append(str(diff_meter_rounded))
+    # Calculation of the number of days since the last enter
     date_format = "%d.%m.%Y"
-    prev_date = datetime.strptime(last_data[1], date_format)
-    new_date = datetime.strptime(data[1], date_format)
+    if worksheet == 'electricity':
+        prev_date = datetime.strptime(last_data[1], date_format)
+        new_date = datetime.strptime(data[1], date_format)
+    else:
+        prev_date = datetime.strptime(last_data[0], date_format)
+        new_date = datetime.strptime(data[0], date_format)
     diff_days = new_date - prev_date
     diff_days_num = diff_days.days
     data.append(str(diff_days_num))
-    # Calculation of average electricity consumption per day since the last measurement
-    consumption = diff_meter / diff_days_num
-    consumption_rounded = round(consumption, 1)
-    data.append(str(consumption_rounded))
-    # Calculation of the average cost of electricity consumed per day since the last measurement
-    cost = consumption * float(data[2])
-    cost_rounded = round(cost, 2)
-    data.append(str(cost_rounded))
-    print("\nCalculation finished.")
-
-    return data
-
-
-def calculate_food_data(data):
-    """
-    Calculation of the number of days between bills for food
-    and the price of food per day.
-    """
-    print("\nCalculating...")
-    last_data = SHEET.worksheet('food').get_all_values()[-1]
-    price = SHEET.worksheet('food').get_all_values()[-1]
-    # Calculation of how much electricity has been spent since the last measurement
-        # diff_meter = float(data[0]) - float(last_data[0])
-        # diff_meter_rounded = round(diff_meter, 1)
-        # data.append(str(diff_meter_rounded))
-    # Calculation of the number of days since the last bill
-    date_format = "%d.%m.%Y"
-    prev_date = datetime.strptime(last_data[0], date_format)
-    new_date = datetime.strptime(data[0], date_format)
-    diff_days = new_date - prev_date
-    diff_days_num = diff_days.days
-    data.append(str(diff_days_num))
-    # Calculation of average broadband price per day
-    consumption = float(price[1]) / diff_days_num
-    consumption_rounded = round(consumption, 2)
-    data.append(str(consumption_rounded))
-    # Calculation of the average cost of electricity consumed per day since the last measurement
-        # cost = consumption * float(data[2])
-        # cost_rounded = round(cost, 2)
-        # data.append(str(cost_rounded))
-    print("\nCalculation finished.")
-
-    return data
-
-
-def calculate_broadband_data(data):
-    """
-    Calculation of the number of days between bills for broadband
-    and the price of broadband per day.
-    """
-    print("\nCalculating...")
-    last_data = SHEET.worksheet('broadband').get_all_values()[-1]
-    price = SHEET.worksheet('broadband').get_all_values()[-1]
-    # Calculation of how much electricity has been spent since the last measurement
-        # diff_meter = float(data[0]) - float(last_data[0])
-        # diff_meter_rounded = round(diff_meter, 1)
-        # data.append(str(diff_meter_rounded))
-    # Calculation of the number of days since the last bill
-    date_format = "%d.%m.%Y"
-    prev_date = datetime.strptime(last_data[0], date_format)
-    new_date = datetime.strptime(data[0], date_format)
-    diff_days = new_date - prev_date
-    diff_days_num = diff_days.days
-    data.append(str(diff_days_num))
-    # Calculation of average broadband price per day
-    consumption = float(price[1]) / diff_days_num
-    consumption_rounded = round(consumption, 2)
-    data.append(str(consumption_rounded))
-    # Calculation of the average cost of electricity consumed per day since the last measurement
-        # cost = consumption * float(data[2])
-        # cost_rounded = round(cost, 2)
-        # data.append(str(cost_rounded))
+    if worksheet == 'electricity':
+        # Calculation of average electricity consumption per day since the last measurement
+        consumption = diff_meter / diff_days_num
+        consumption_rounded = round(consumption, 1)
+        data.append(str(consumption_rounded))
+        # Calculation of the average cost of electricity consumed per day since the last measurement
+        cost = consumption * float(data[2])
+        cost_rounded = round(cost, 2)
+        data.append(str(cost_rounded))
+    else:
+        # Calculation of average utility price per day
+        consumption = float(last_data[1]) / diff_days_num
+        consumption_rounded = round(consumption, 2)
+        data.append(str(consumption_rounded))
     print("\nCalculation finished.")
 
     return data
@@ -419,42 +365,19 @@ def validate_date(value, last_date):
         print(f"Invalid data: {error}, please try again.")
         return False
 
-# Merge !!! update functions
+# Update functions
 
-def update_worksheet_electricity(data):
+def update_worksheet(data, worksheet):
     """
-    Receives a list of data to be inserted into an electricity worksheet.
-    Update the electricity worksheet with the data provided.
+    Receives a list of data to be inserted into a worksheet
+    and a string with the name of the worksheet.
+    Update the worksheet with the data provided.
     """
-    print("\nUpdating electricity worksheet...\n")
-    worksheet_to_update = SHEET.worksheet('electricity')
+    print(f"\nUpdating {worksheet} worksheet...\n")
+    worksheet_to_update = SHEET.worksheet(worksheet)
     worksheet_to_update.append_row(data)
-    print("Electricity worksheet updated successfully.")
-    edit_worksheet('electricity')
-
-
-def update_worksheet_broadband(data):
-    """
-    Receives a list of data to be inserted into a broadband worksheet.
-    Update the broadband worksheet with the data provided.
-    """
-    print("\nUpdating broadband worksheet...\n")
-    worksheet_to_update = SHEET.worksheet('broadband')
-    worksheet_to_update.append_row(data)
-    print("Broadband worksheet updated successfully.")
-    edit_worksheet('broadband')
-
-
-def update_worksheet_food(data):
-    """
-    Receives a list of data to be inserted into a food worksheet.
-    Update the food worksheet with the data provided.
-    """
-    print("\nUpdating food worksheet...\n")
-    worksheet_to_update = SHEET.worksheet('food')
-    worksheet_to_update.append_row(data)
-    print("Food worksheet updated successfully.")
-    edit_worksheet('food')
+    print(f"{worksheet} worksheet updated successfully.")
+    edit_worksheet(worksheet)
 
 
 def delete_last_row(worksheet):
@@ -530,6 +453,3 @@ def add_default(worksheet):
 
 print("\nWelcome to v.1.3.4!\n")
 main()
-
-
-# print(SHEET.worksheet('food').get_all_values())
