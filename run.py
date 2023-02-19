@@ -15,6 +15,7 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('codeinstitute-utilities')
 
+# Main function
 
 def main():
     """
@@ -23,6 +24,7 @@ def main():
     while True:
         choose_utilitie()
 
+# Menu functions
 
 def choose_utilitie():
     """
@@ -95,6 +97,7 @@ def edit_worksheet(worksheet):
 
 def statistics(worksheet):
     """
+    Shows statistics for relevant worksheet.
     """
     while True:
         print()
@@ -102,16 +105,73 @@ def statistics(worksheet):
         print()
         print("Enter '1' to show average spendings per day at all.")
         print("Enter '2' to show average spendings per day for last month.")
-        print("Enter '3' to show all spendings at all.")
-        print("Enter '4' to show all spendings for last month.")
-        print("Enter '5' to delete all rows.")
         print("Enter '0' to go back.")
         print()
         option = input("Enter your choice:\n")
-        if option == '0':
+        if option == '1':
+            statistics_average_all(worksheet)
+        if option == '2':
+            statistics_average_month(worksheet)
+        elif option == '0':
             edit_worksheet(worksheet)
 
-# Merge !!! get finctions
+# Calculating statistics function
+
+def statistics_average_all(worksheet):
+    """
+    Calculate average cost per day of relevant utility for all time.
+    """
+    days_list = SHEET.worksheet(worksheet).col_values(3)[2:]
+    costs_per_day = SHEET.worksheet(worksheet).col_values(4)[2:]
+    if worksheet == 'electricity':
+        days_list = SHEET.worksheet(worksheet).col_values(5)[2:]
+        costs_per_day = SHEET.worksheet(worksheet).col_values(7)[2:]
+    costs_sum = 0
+    days_sum = 0
+    for days, cost_per_day in zip(days_list, costs_per_day):
+        costs_sum = costs_sum + (int(days) * float(cost_per_day))
+        days_sum = days_sum + int(days)
+    average = round((costs_sum / days_sum), 2)
+    print(f"\nTotal number of days: {days_sum}.")
+    print(f"Total costs for all time: {round(costs_sum, 2)}.")
+    print(f"Average cost per day for all time: {average}.")
+
+    statistics(worksheet)
+
+
+def statistics_average_month(worksheet):
+    """
+    Calculate average cost per day of relevant utility for last month.
+    """
+    days_list = SHEET.worksheet(worksheet).col_values(3)[2:]
+    costs_per_day = SHEET.worksheet(worksheet).col_values(4)[2:]
+    if worksheet == 'electricity':
+        days_list = SHEET.worksheet(worksheet).col_values(5)[2:]
+        costs_per_day = SHEET.worksheet(worksheet).col_values(7)[2:]
+    days_sum = 0
+    days_list.reverse()
+    i = 0
+    for days in days_list:
+        i = i + 1
+        days_sum = days_sum + int(days)
+        if days_sum >= 30:
+            break
+    days_exceeded = days_sum - 30
+    costs_per_day.reverse()
+    costs_sum = 0
+    for days, cost_per_day in zip(days_list[0:i], costs_per_day[0:i]):
+        costs_sum = costs_sum + (int(days) * float(cost_per_day))
+    average = round((costs_sum / days_sum), 2)
+    if days_exceeded > 0:
+        costs_sum_month = average * (days_sum - days_exceeded)
+    else:
+        costs_sum_month = costs_sum
+    print(f"Total costs for last month: {round(costs_sum_month, 2)}.")
+    print(f"Average cost per day for last month: {average}.")
+
+    statistics(worksheet)
+
+# MERGE GET FUNCTIONS !!!
 
 def get_electricity_data(worksheet):
     """
@@ -472,6 +532,7 @@ def add_default(worksheet):
     print(f"Default rows on the {worksheet} worksheet have been appended.")
     edit_worksheet(worksheet)
 
+# Programm lunch
 
-print("\nWelcome to v.1.3.4!\n")
+print("\nWelcome to v.1.4.6!\n")
 main()
