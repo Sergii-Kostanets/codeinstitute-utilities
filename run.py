@@ -53,25 +53,19 @@ def edit_worksheet(worksheet):
     """
     Choice of the relevant worksheets for editing.
     """
-    action = [
-        ['1', 'add one row'],
-        ['2', 'delete last row'],
-        ['3', 'delete all rows'],
-        ['4', 'add default data'],
-        ['5', 'go back']
-        ]
     while True:
         print()
-        print(f"Editing mode of {worksheet} worksheet.")
+        print(f"Actions with {worksheet} worksheet.")
         print()
-        print(f"Enter '{action[0][0]}' to {action[0][1]}.")
-        print(f"Enter '{action[1][0]}' to {action[1][1]}.")
-        print(f"Enter '{action[2][0]}' to {action[2][1]}.")
-        print(f"Enter '{action[3][0]}' to {action[3][1]}.")
-        print(f"Enter '{action[4][0]}' to {action[4][1]}.")
+        print("Enter '1' to add one row.")
+        print("Enter '2' to delete last row.")
+        print("Enter '3' to delete all rows.")
+        print("Enter '4' to add default data.")
+        print("Enter '5' to check statistics.")
+        print("Enter '0' to go back.")
         print()
         option = input("Enter your choice:\n")
-        if option == action[0][0]:
+        if option == '1':
             if worksheet == 'electricity':
                 data = get_electricity_data(worksheet)
                 update_worksheet(data, worksheet)
@@ -84,17 +78,38 @@ def edit_worksheet(worksheet):
             else:
                 print(f"Worksheet {worksheet} not found!")
                 main()
-        elif option == action[1][0]:
+        elif option == '2':
             delete_last_row(worksheet)
-        elif option == action[2][0]:
+        elif option == '3':
             delete_all(worksheet)
-        elif option == action[3][0]:
+        elif option == '4':
             add_default(worksheet)
-        elif option == action[4][0]:
+        elif option == '5':
+            statistics(worksheet)
+        elif option == '0':
             print()
             main()
         else:
             print("\nCheck your choice")
+
+
+def statistics(worksheet):
+    """
+    """
+    while True:
+        print()
+        print(f"Statistics from {worksheet} worksheet.")
+        print()
+        print("Enter '1' to show average spendings per day at all.")
+        print("Enter '2' to show average spendings per day for last month.")
+        print("Enter '3' to show all spendings at all.")
+        print("Enter '4' to show all spendings for last month.")
+        print("Enter '5' to delete all rows.")
+        print("Enter '0' to go back.")
+        print()
+        option = input("Enter your choice:\n")
+        if option == '0':
+            edit_worksheet(worksheet)
 
 # Merge !!! get finctions
 
