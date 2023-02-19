@@ -228,7 +228,7 @@ def get_broadband_data(worksheet):
 
     return calculated_broadband_data
 
-# Calculate function (MAKE IT BETTER)
+# Calculate function
 
 def calculate_data(data, worksheet):
     """
