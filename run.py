@@ -168,22 +168,27 @@ def get_food_data(worksheet):
     via the terminal, which must be date and price.
     The loops will repeatedly request data, until it is valid.
     """
+
+    print("\nPlease enter food data.")
+    print("Data should be: date and price from last bill.")
+
     while True:
+
         today = date.today().strftime("%d.%m.%Y")
         last_date = SHEET.worksheet('food').get_all_values()[-1][0]
-        print("\nPlease enter food data.")
-        print("Data should be: date and price from last bill.\n")
-        print("Enter the date. Leave blank to enter today's date.")
+        print("\nEnter the date. Leave blank to enter today's date.")
         date_input = input(f"Last entered date is: {last_date}. Today is: {today}.\n")
-
         validated_date = validate_date(date_input, last_date)
+
         if validated_date:
+
             while True:
+
                 last_price = SHEET.worksheet('food').get_all_values()[-1][1]
                 print("\nEnter the price, €.")
                 price_input = input(f"Leave blank for previous price: {last_price}€.\n")
-
                 validated_price = validate_price(price_input, last_price)
+
                 if validated_price:
                     break
 
@@ -202,22 +207,26 @@ def get_broadband_data(worksheet):
     via the terminal, which must be date and price.
     The loops will repeatedly request data, until it is valid.
     """
+    print("\nPlease enter broadband data.")
+    print("Data should be: date and price from last bill.")
+
     while True:
+
         today = date.today().strftime("%d.%m.%Y")
         last_date = SHEET.worksheet('broadband').get_all_values()[-1][0]
-        print("\nPlease enter broadband data.")
-        print("Data should be: date and price from last bill.\n")
-        print("Enter the date. Leave blank to enter today's date.")
+        print("\nEnter the date. Leave blank to enter today's date.")
         date_input = input(f"Last entered date is: {last_date}. Today is: {today}.\n")
-
         validated_date = validate_date(date_input, last_date)
+
         if validated_date:
+
             while True:
+
                 last_price = SHEET.worksheet('broadband').get_all_values()[-1][1]
                 print("\nEnter the price, €.")
                 price_input = input(f"Leave blank for previous price: {last_price}€.\n")
-
                 validated_price = validate_price(price_input, last_price)
+
                 if validated_price:
                     break
 
