@@ -120,25 +120,27 @@ def get_electricity_data(worksheet):
     via the terminal, which must be meter reading, date and price.
     The loops will repeatedly request data, until it is valid.
     """
+    print("\nPlease enter electricity data.")
+    print("Data should be: meter reading, date and price per kWh.")
+
     while True:
-        print("\nPlease enter electricity data.")
-        print("Data should be: meter reading, date and price per kWh.\n")
 
-        last_electricity_meter_reading = SHEET.worksheet('electricity').get_all_values()[-1][0]
-        print("Enter meter reading.")
-        electricity_meter_reading = input(f"Previous value: {last_electricity_meter_reading}.\n")
+        today = date.today().strftime("%d.%m.%Y")
+        last_date = SHEET.worksheet('electricity').get_all_values()[-1][0]
+        print("\nEnter the date. Leave blank to enter today's date.")
+        date_input = input(f"Last entered date is: {last_date}. Today is: {today}.\n")
+        validated_date = validate_date(date_input, last_date)
 
-        validated_electricity_meter = validate_electricity_meter(electricity_meter_reading)
-        if validated_electricity_meter:
+        if validated_date:
 
             while True:
-                today = date.today().strftime("%d.%m.%Y")
-                last_date = SHEET.worksheet('electricity').get_all_values()[-1][1]
-                print("\nEnter the date. Leave blank to enter today's date.")
-                date_input = input(f"Last entered date is: {last_date}. Today is: {today}.\n")
 
-                validated_date = validate_date(date_input, last_date)
-                if validated_date:
+                last_electricity_meter_reading = SHEET.worksheet('electricity').get_all_values()[-1][1]
+                print("\nEnter meter reading.")
+                electricity_meter_reading = input(f"Previous value: {last_electricity_meter_reading}.\n")
+                validated_electricity_meter = validate_electricity_meter(electricity_meter_reading)
+
+                if validated_electricity_meter:
 
                     while True:
                         last_price = SHEET.worksheet('electricity').get_all_values()[-1][2]
@@ -153,7 +155,7 @@ def get_electricity_data(worksheet):
 
             break
 
-    electricity_data = [str(validated_electricity_meter), str(validated_date), str(validated_price)]
+    electricity_data = [str(validated_date), str(validated_electricity_meter), str(validated_price)]
     calculated_electricity_data = calculate_data(electricity_data, worksheet)
 
     return calculated_electricity_data
@@ -238,17 +240,13 @@ def calculate_data(data, worksheet):
     last_data = SHEET.worksheet(worksheet).get_all_values()[-1]
     if worksheet == 'electricity':
         # Calculation of how much electricity has been spent since the last measurement
-        diff_meter = float(data[0]) - float(last_data[0])
+        diff_meter = float(data[1]) - float(last_data[1])
         diff_meter_rounded = round(diff_meter, 1)
         data.append(str(diff_meter_rounded))
     # Calculation of the number of days since the last enter
     date_format = "%d.%m.%Y"
-    if worksheet == 'electricity':
-        prev_date = datetime.strptime(last_data[1], date_format)
-        new_date = datetime.strptime(data[1], date_format)
-    else:
-        prev_date = datetime.strptime(last_data[0], date_format)
-        new_date = datetime.strptime(data[0], date_format)
+    prev_date = datetime.strptime(last_data[0], date_format)
+    new_date = datetime.strptime(data[0], date_format)
     diff_days = new_date - prev_date
     diff_days_num = diff_days.days
     data.append(str(diff_days_num))
@@ -286,7 +284,7 @@ def validate_electricity_meter(value):
             )
 
         new_electricity_meter_reading = float(value)
-        last_electricity_meter_reading = float(SHEET.worksheet('electricity').get_all_values()[-1][0])
+        last_electricity_meter_reading = float(SHEET.worksheet('electricity').get_all_values()[-1][1])
 
         if new_electricity_meter_reading < last_electricity_meter_reading:
             raise ValueError(
@@ -427,18 +425,18 @@ def add_default(worksheet):
 
     if worksheet == 'electricity':
         default_data = [
-            ['meter', 'date', 'price, €', 'consumption, kWh', 'days', 'per day, kWh', 'per day, €'],
-            ['23570.0', '10.01.2023', '0.42', '', '', '', ''],
-            ['23603.8', '14.01.2023', '0.42', '33.8', '4', '8.4', '3.55'],
-            ['23660.0', '17.01.2023', '0.42', '14.6', '1', '14.6', '6.13'],
-            ['23669.0', '18.01.2023', '0.42', '9.0', '1', '9.0', '3.78'],
-            ['23690.0', '19.01.2023', '0.42', '21.0', '1', '21.0', '8.82'],
-            ['23728.5', '23.01.2023', '0.42', '38.5', '4', '9.6', '4.04'],
-            ['23740.0', '24.01.2023', '0.42', '11.5', '1', '11.5', '4.83'],
-            ['23822.6', '31.01.2023', '0.42', '82.6', '7', '11.8', '4.96'],
-            ['23835.6', '01.02.2023', '0.42', '13.0', '1', '13.0', '5.46'],
-            ['23922.2', '09.02.2023', '0.42', '86.6', '8', '10.8', '4.55'],
-            ['23996.0', '16.02.2023', '0.42', '73.8', '7', '10.5', '4.43']
+            ['date', 'meter', 'price, €', 'consumption, kWh', 'days', 'per day, kWh', 'per day, €'],
+            ['10.01.2023', '23570.0', '0.42', '', '', '', ''],
+            ['14.01.2023', '23603.8', '0.42', '33.8', '4', '8.4', '3.55'],
+            ['17.01.2023', '23660.0', '0.42', '14.6', '1', '14.6', '6.13'],
+            ['18.01.2023', '23669.0', '0.42', '9.0', '1', '9.0', '3.78'],
+            ['19.01.2023', '23690.0', '0.42', '21.0', '1', '21.0', '8.82'],
+            ['23.01.2023', '23728.5', '0.42', '38.5', '4', '9.6', '4.04'],
+            ['24.01.2023', '23740.0', '0.42', '11.5', '1', '11.5', '4.83'],
+            ['31.01.2023', '23822.6', '0.42', '82.6', '7', '11.8', '4.96'],
+            ['01.02.2023', '23835.6', '0.42', '13.0', '1', '13.0', '5.46'],
+            ['09.02.2023', '23922.2', '0.42', '86.6', '8', '10.8', '4.55'],
+            ['16.02.2023', '23996.0', '0.42', '73.8', '7', '10.5', '4.43']
             ]
     elif worksheet == 'food':
         default_data = [
