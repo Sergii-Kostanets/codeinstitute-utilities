@@ -31,18 +31,18 @@ def choose_utilitie():
     Calls the appropriate utility function based on the users selection.
     """
     while True:
-        print("Enter '1' to update electricity worksheet.")
-        print("Enter '2' to update food worksheet.")
-        print("Enter '3' to update broadband worksheet.")
-        print("Enter '4' to update gas worksheet.")
+        print("Enter '1' to manage electricity worksheet.")
+        print("Enter '2' to manage broadband worksheet.")
+        print("Enter '3' to manage food worksheet.")
+        print("Enter '4' to manage gas worksheet.")
         print()
         option = input("Enter your choice:\n")
         if option == '1':
             edit_worksheet('electricity')
         elif option == '2':
-            edit_worksheet('food')
-        elif option == '3':
             edit_worksheet('broadband')
+        elif option == '3':
+            edit_worksheet('food')
         elif option == '4':
             edit_worksheet('gas')
         else:
@@ -59,9 +59,8 @@ def edit_worksheet(worksheet):
         print()
         print("Enter '1' to add one row.")
         print("Enter '2' to delete last row.")
-        print("Enter '3' to delete all rows.")
-        print("Enter '4' to add default data.")
-        print("Enter '5' to check statistics.")
+        print("Enter '3' to check statistics.")
+        print("Enter '4' to see the table.")
         print("Enter '0' to go back.")
         print()
         option = input("Enter your choice:\n")
@@ -84,11 +83,9 @@ def edit_worksheet(worksheet):
         elif option == '2':
             delete_last_row(worksheet)
         elif option == '3':
-            delete_all(worksheet)
-        elif option == '4':
-            add_default(worksheet)
-        elif option == '5':
             statistics(worksheet)
+        elif option == '4':
+            visualize(worksheet)
         elif option == '0':
             print()
             main()
@@ -120,6 +117,13 @@ def statistics(worksheet):
             statistics_average_term(worksheet, term)
         elif option == '0':
             edit_worksheet(worksheet)
+
+# Vizualize function to see the table
+
+def visualize(worksheet):
+    """
+    """
+    print("Function is not ready yet.")
 
 # Calculating statistics function
 
@@ -191,7 +195,7 @@ def get_electricity_data(worksheet):
     The loops will repeatedly request data, until it is valid.
     """
     print("\nPlease enter electricity data.")
-    print("Data should be: meter reading, date and price per kWh.")
+    print("Data should be: date, meter reading and price per kWh.")
 
     while True:
 
@@ -376,6 +380,11 @@ def calculate_data(data, worksheet):
         cost = consumption * float(data[2])
         cost_rounded = round(cost, 2)
         data.append(str(cost_rounded))
+    elif worksheet == 'broadband':
+        # Calculation of average broadband price per day
+        consumption = float(data[1]) / diff_days_num
+        consumption_rounded = round(consumption, 2)
+        data.append(str(consumption_rounded))
     else:
         # Calculation of average utility price per day
         consumption = float(last_data[1]) / diff_days_num
@@ -517,70 +526,17 @@ def delete_last_row(worksheet):
     worksheet_del_last = SHEET.worksheet(worksheet)
     worksheet_all_values = SHEET.worksheet(worksheet).get_all_values()
     count_rows_data = len(worksheet_all_values)
-    worksheet_del_last.delete_rows(count_rows_data)
-    print(f"The last row on the {worksheet} worksheet has been removed.")
-    edit_worksheet(worksheet)
-
-
-def delete_all(worksheet):
-    """
-    Deleting all data in the relevant worksheet.
-    """
-    worksheet_del_all = SHEET.worksheet(worksheet)
-    worksheet_all_values = SHEET.worksheet(worksheet).get_all_values()
-    count_rows_data = len(worksheet_all_values)
-    worksheet_del_all.delete_rows(1, count_rows_data)
-    print(f"All rows on the {worksheet} worksheet have been removed.")
-    edit_worksheet(worksheet)
-
-
-def add_default(worksheet):
-    """
-    Adding default data in the relevant worksheet.
-    """
-    worksheet_add_default = SHEET.worksheet(worksheet)
-
-    if worksheet == 'electricity':
-        default_data = [
-            ['date', 'meter', 'price, €', 'consumption, kWh', 'days', 'per day, kWh', 'per day, €'],
-            ['10.01.2023', '23570.0', '0.42', '', '', '', ''],
-            ['14.01.2023', '23603.8', '0.42', '33.8', '4', '8.4', '3.55'],
-            ['17.01.2023', '23660.0', '0.42', '14.6', '1', '14.6', '6.13'],
-            ['18.01.2023', '23669.0', '0.42', '9.0', '1', '9.0', '3.78'],
-            ['19.01.2023', '23690.0', '0.42', '21.0', '1', '21.0', '8.82'],
-            ['23.01.2023', '23728.5', '0.42', '38.5', '4', '9.6', '4.04'],
-            ['24.01.2023', '23740.0', '0.42', '11.5', '1', '11.5', '4.83'],
-            ['31.01.2023', '23822.6', '0.42', '82.6', '7', '11.8', '4.96'],
-            ['01.02.2023', '23835.6', '0.42', '13.0', '1', '13.0', '5.46'],
-            ['09.02.2023', '23922.2', '0.42', '86.6', '8', '10.8', '4.55'],
-            ['16.02.2023', '23996.0', '0.42', '73.8', '7', '10.5', '4.43']
-            ]
-    elif worksheet == 'food':
-        default_data = [
-            ['data', 'price, €', 'days', 'per day, €'],
-            ['01.02.2023', '20.47', '', ''],
-            ['03.02.2023', '43.19', '2', '10.23'],
-            ['06.02.2023', '13.15', '3', '14.4'],
-            ['09.02.2023', '35.63', '3', '4.38']
-            ]
-    elif worksheet == 'broadband':
-        default_data = [
-            ['date', 'price, €', 'days', 'per day, €'],
-            ['15.10.2022', '', '', ''],
-            ['30.11.2022', '61.84', '46', '1.34'],
-            ['21.12.2022', '64.14', '21', '2.94'],
-            ['17.01.2023', '50.12', '27', '2.38'],
-            ['04.02.2023', '33.54', '18', '2.78']
-            ]
+    if count_rows_data > 2:
+        worksheet_del_last.delete_rows(count_rows_data)
+        print(f"The last row on the {worksheet} worksheet has been removed.")
+        edit_worksheet(worksheet)
     else:
-        print("Worksheet not found.\n")
-        main()
-
-    worksheet_add_default.append_rows(default_data)
-    print(f"Default rows on the {worksheet} worksheet have been appended.")
-    edit_worksheet(worksheet)
+        print("It is forbidden to delete the original information.")
 
 # Programm lunch
 
-print("\nWelcome to v.1.4.6!\n")
+print("\nWelcome to v.1.5.7!\n")
+print("This program is designed to account for utilities.")
+print("You can select a utility service and then the action you want to perform")
+print("or view the information.\n")
 main()
