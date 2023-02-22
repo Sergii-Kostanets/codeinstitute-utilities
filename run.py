@@ -19,7 +19,7 @@ SHEET = GSPREAD_CLIENT.open('codeinstitute-utilities')
 
 def main():
     """
-    Run all program functions
+    Run all program functions.
     """
     while True:
         choose_utilitie()
@@ -30,23 +30,21 @@ def choose_utilitie():
     """
     Calls the appropriate utility function based on the users selection.
     """
-    utility = [
-        ["1", "electricity"],
-        ["2", "food"],
-        ["3", "broadband"]
-        ]
     while True:
-        print(f"Enter '{utility[0][0]}' to update {utility[0][1]}")
-        print(f"Enter '{utility[1][0]}' to update {utility[1][1]}")
-        print(f"Enter '{utility[2][0]}' to update {utility[2][1]}")
+        print("Enter '1' to update electricity worksheet.")
+        print("Enter '2' to update food worksheet.")
+        print("Enter '3' to update broadband worksheet.")
+        print("Enter '4' to update gas worksheet.")
         print()
         option = input("Enter your choice:\n")
-        if option == utility[0][0]:
-            edit_worksheet(utility[0][1])
-        elif option == utility[1][0]:
-            edit_worksheet(utility[1][1])
-        elif option == utility[2][0]:
-            edit_worksheet(utility[2][1])
+        if option == '1':
+            edit_worksheet('electricity')
+        elif option == '2':
+            edit_worksheet('food')
+        elif option == '3':
+            edit_worksheet('broadband')
+        elif option == '4':
+            edit_worksheet('gas')
         else:
             print("\nCheck your choice\n")
 
@@ -77,8 +75,11 @@ def edit_worksheet(worksheet):
             elif worksheet == 'broadband':
                 data = get_broadband_data(worksheet)
                 update_worksheet(data, worksheet)
+            elif worksheet == 'gas':
+                data = get_gas_data(worksheet)
+                update_worksheet(data, worksheet)
             else:
-                print(f"Worksheet {worksheet} not found!")
+                print(f"Action is not ready for worksheet {worksheet}!\n")
                 main()
         elif option == '2':
             delete_last_row(worksheet)
@@ -105,13 +106,18 @@ def statistics(worksheet):
         print()
         print("Enter '1' to show average spendings per day at all.")
         print("Enter '2' to show average spendings per day for last month.")
+        print("Enter '3' to show average spendings per day for last 3 months.")
         print("Enter '0' to go back.")
         print()
         option = input("Enter your choice:\n")
         if option == '1':
             statistics_average_all(worksheet)
         if option == '2':
-            statistics_average_month(worksheet)
+            term = 30
+            statistics_average_term(worksheet, term)
+        if option == '3':
+            term = 91
+            statistics_average_term(worksheet, term)
         elif option == '0':
             edit_worksheet(worksheet)
 
@@ -139,7 +145,7 @@ def statistics_average_all(worksheet):
     statistics(worksheet)
 
 
-def statistics_average_month(worksheet):
+def statistics_average_term(worksheet, term):
     """
     Calculate average cost per day of relevant utility for last month.
     """
@@ -154,24 +160,28 @@ def statistics_average_month(worksheet):
     for days in days_list:
         i = i + 1
         days_sum = days_sum + int(days)
-        if days_sum >= 30:
+        if days_sum >= term:
             break
-    days_exceeded = days_sum - 30
+    days_exceeded = days_sum - term
     costs_per_day.reverse()
     costs_sum = 0
     for days, cost_per_day in zip(days_list[0:i], costs_per_day[0:i]):
         costs_sum = costs_sum + (int(days) * float(cost_per_day))
     average = round((costs_sum / days_sum), 2)
     if days_exceeded > 0:
-        costs_sum_month = average * (days_sum - days_exceeded)
+        costs_sum_term = average * (days_sum - days_exceeded)
     else:
-        costs_sum_month = costs_sum
-    print(f"Total costs for last month: {round(costs_sum_month, 2)}.")
-    print(f"Average cost per day for last month: {average}.")
+        costs_sum_term = costs_sum
+    if term == 30:
+        print(f"Total costs for last month: {round(costs_sum_term, 2)}.")
+        print(f"Average cost per day for last month: {average}.")
+    elif term == 91:
+        print(f"Total costs for last 3 months: {round(costs_sum_term, 2)}.")
+        print(f"Average cost per day for last 3 months: {average}.")
 
     statistics(worksheet)
 
-# MERGE GET FUNCTIONS !!!
+# Get functions
 
 def get_electricity_data(worksheet):
     """
@@ -296,6 +306,44 @@ def get_broadband_data(worksheet):
     calculated_broadband_data = calculate_data(broadband_data, worksheet)
 
     return calculated_broadband_data
+
+
+def get_gas_data(worksheet):
+    """
+    Gets date and price input from the user.
+    Run a while loops to collect a valid data from the user
+    via the terminal, which must be date and price.
+    The loops will repeatedly request data, until it is valid.
+    """
+    print("\nPlease enter gas data.")
+    print("Data should be: date and price from last bill.")
+
+    while True:
+
+        today = date.today().strftime("%d.%m.%Y")
+        last_date = SHEET.worksheet('gas').get_all_values()[-1][0]
+        print("\nEnter the date. Leave blank to enter today's date.")
+        date_input = input(f"Last entered date is: {last_date}. Today is: {today}.\n")
+        validated_date = validate_date(date_input, last_date)
+
+        if validated_date:
+
+            while True:
+
+                last_price = SHEET.worksheet('gas').get_all_values()[-1][1]
+                print("\nEnter the price, €.")
+                price_input = input(f"Leave blank for previous price: {last_price}€.\n")
+                validated_price = validate_price(price_input, last_price)
+
+                if validated_price:
+                    break
+
+            break
+
+    gas_data = [str(validated_date), str(validated_price)]
+    calculated_gas_data = calculate_data(gas_data, worksheet)
+
+    return calculated_gas_data
 
 # Calculate function
 
