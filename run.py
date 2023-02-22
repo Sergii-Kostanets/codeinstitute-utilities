@@ -31,6 +31,7 @@ def choose_utilitie():
     Calls the appropriate utility function based on the users selection.
     """
     while True:
+        print("Main menu.\n")
         print("Enter '1' to manage electricity worksheet.")
         print("Enter '2' to manage broadband worksheet.")
         print("Enter '3' to manage food worksheet.")
@@ -55,7 +56,7 @@ def edit_worksheet(worksheet):
     """
     while True:
         print()
-        print(f"Actions with {worksheet} worksheet.")
+        print(f"Actions with {worksheet} worksheet:")
         print()
         print("Enter '1' to add one row.")
         print("Enter '2' to delete last row.")
@@ -418,8 +419,8 @@ def validate_electricity_meter(value):
             )
         print("Electricity meter is valid.")
 
-    except ValueError as error:
-        print(f"Invalid data: {error}, please try again.")
+    except ValueError:
+        print("Invalid data: please try again.")
         return False
 
     return new_electricity_meter_reading
@@ -444,12 +445,15 @@ def validate_price(value, last_price):
         if float_value == 0:
             print("Utility cannot be free, please try again.")
             return False
+        elif float_value < 0:
+            print("Price cannot be negative, please try again.")
+            return False
 
         print(f"Price {float_value}€ is valid.")
         return float_value
 
-    except ValueError as error:
-        print(f"Invalid price: {error}, please try again.")
+    except ValueError:
+        print("Invalid data, please try again.")
         return False
 
 
@@ -500,8 +504,8 @@ def validate_date(value, last_date):
         print("Date is valid.")
         return value
 
-    except ValueError as error:
-        print(f"Invalid data: {error}, please try again.")
+    except ValueError:
+        print("Invalid data: please try again.")
         return False
 
 # Update functions
@@ -523,19 +527,30 @@ def delete_last_row(worksheet):
     """
     Deleting the last row in the relevant worksheet.
     """
-    worksheet_del_last = SHEET.worksheet(worksheet)
-    worksheet_all_values = SHEET.worksheet(worksheet).get_all_values()
-    count_rows_data = len(worksheet_all_values)
-    if count_rows_data > 2:
-        worksheet_del_last.delete_rows(count_rows_data)
-        print(f"The last row on the {worksheet} worksheet has been removed.")
-        edit_worksheet(worksheet)
-    else:
-        print("It is forbidden to delete the original information.")
+    while True:
+        print(f"\nAre you sure you want to delete the last row in the {worksheet} worksheet?")
+        print(f"Enter '1' to confirm deletion of the last row on the {worksheet} worksheet.")
+        print("Enter '0' to cancel and go back.\n")
+        confirm = input("Enter your choice:\n")
+        if confirm == '1':
+            worksheet_del_last = SHEET.worksheet(worksheet)
+            worksheet_all_values = SHEET.worksheet(worksheet).get_all_values()
+            count_rows_data = len(worksheet_all_values)
+            if count_rows_data > 2:
+                worksheet_del_last.delete_rows(count_rows_data)
+                print(f"The last row on the {worksheet} worksheet has been removed.")
+                edit_worksheet(worksheet)
+            else:
+                print("It is forbidden to delete the original information.")
+                edit_worksheet(worksheet)
+        elif confirm == '0':
+            edit_worksheet(worksheet)
+        else:
+            print("\nCheck your choice.")
 
 # Programm lunch
 
-print("\nWelcome to v.1.5.7!\n")
+print("\nWelcome to v.1.6.8!\n")
 print("This program is designed to account for utilities.")
 print("You can select a utility service and then the action you want to perform")
 print("or view the information.\n")
