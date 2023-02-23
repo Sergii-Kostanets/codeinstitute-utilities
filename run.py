@@ -512,7 +512,7 @@ def delete_last_row(worksheet):
 
 # Program lunch
 
-console.print("\n Welcome to v.2.1.1!\n", style="title")
+console.print("\n Welcome to v.2.2.1!\n", style="title")
 console.print(" This program is designed to account for utilities.", style="description")
 console.print(" You can select a utility service and then the action you want", style="description")
 console.print(" to perform or view the information.\n", style="description")
