@@ -122,6 +122,8 @@ def statistics(worksheet):
             statistics_average_term(worksheet, term)
         elif option == '0':
             edit_worksheet(worksheet)
+        else:
+            console.print("There is no such option. Retry your input.", style="error")
 
 # Vizualize function to see the table
 
@@ -331,7 +333,7 @@ def calculate_data(data, worksheet):
         consumption = float(last_data[1]) / diff_days_num
         consumption_rounded = round(consumption, 2)
         data.append(str(consumption_rounded))
-    console.print("\nCalculation finished.", style="success")
+    console.print("\ncalculation finished.", style="success")
 
     return data
 
@@ -448,14 +450,21 @@ def validate_date(worksheet, value, last_date):
             return False
 
         if date_value > today_value:
-            print(f"Entered date {value} cannot be in the future. Today is {today}.")
+            console.print(f"Entered date {value} cannot be in the future. Today is {today}.", style="error")
             return False
 
-        print("Date is valid.")
+        console.print("Date is valid.", style="success")
         return value
 
-    except ValueError:
-        print("Invalid data: please try again.")
+    except ValueError as error:
+        error_string = str(error)
+        if error_string.startswith("time data"):
+            console.print("Date doesn't support word or letter input,", style="error")
+            console.print("enter numbers: first the day, then the month", style="error")
+            console.print("and finally the year (four digits), the numbers", style="error")
+            console.print("must be separated by a dot, please try again.", style="error")
+        else:
+            console.print(f"Invalid data: {error} please try again.", style="error")
         return False
 
 # Update functions
@@ -466,10 +475,10 @@ def update_worksheet(data, worksheet):
     and a string with the name of the worksheet.
     Update the worksheet with the data provided.
     """
-    print(f"\nUpdating {worksheet} worksheet...\n")
+    console.print(f"\nUpdating {worksheet} worksheet...\n", style="success")
     worksheet_to_update = SHEET.worksheet(worksheet)
     worksheet_to_update.append_row(data)
-    print(f"{worksheet} worksheet updated successfully.")
+    console.print(f"{worksheet} worksheet updated successfully.", style="success")
     edit_worksheet(worksheet)
 
 
@@ -478,9 +487,9 @@ def delete_last_row(worksheet):
     Deleting the last row in the relevant worksheet.
     """
     while True:
-        print(f"\nAre you sure you want to delete the last row in the {worksheet} worksheet?")
-        print(f"Enter '1' to confirm deletion of the last row on the {worksheet} worksheet.")
-        print("Enter '0' to cancel and go back.\n")
+        console.print(f"\nAre you sure you want to delete the last row in the {worksheet} worksheet?\n", style="title")
+        console.print(f"Enter '1' to confirm deletion of the last row on the {worksheet} worksheet.", style="choice")
+        console.print("Enter '0' to cancel and go back.\n", style="choice")
         confirm = input("Enter your choice:\n")
         if confirm == '1':
             worksheet_del_last = SHEET.worksheet(worksheet)
@@ -488,20 +497,22 @@ def delete_last_row(worksheet):
             count_rows_data = len(worksheet_all_values)
             if count_rows_data > 2:
                 worksheet_del_last.delete_rows(count_rows_data)
-                print(f"The last row on the {worksheet} worksheet has been removed.")
+                console.print(f"The last row on the {worksheet} worksheet has been removed.", style="success")
                 edit_worksheet(worksheet)
             else:
-                print("It is forbidden to delete the original information.")
+                console.print("It is forbidden to delete the original information.", style="error")
                 edit_worksheet(worksheet)
         elif confirm == '0':
             edit_worksheet(worksheet)
         else:
-            print("\nCheck your choice.")
+            console.print("There is no such option. Retry your input.", style="error")
 
-# Programm lunch
+# Program lunch
 
 console.print("\nWelcome to v.1.6.8!\n", style="title")
 console.print("This program is designed to account for utilities.", style="description")
-console.print("You can select a utility service and then the action you want to perform", style="description")
-console.print("or view the information.\n", style="description")
+console.print("You can select a utility service and then the action you want", style="description")
+console.print("to perform or view the information.\n", style="description")
+console.print("To exit program, just close the tab.", style="description")
+console.print("To restart program, click button above: 'Run program'.\n", style="description")
 main()
