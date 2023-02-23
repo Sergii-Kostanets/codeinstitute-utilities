@@ -135,9 +135,9 @@ def visualize(worksheet):
     table = Table(title=f"\nTable of {worksheet} worksheet")
 
     for heading in worksheet_data[0]:
-        table.add_column(f"{heading}")
+        table.add_column(f"{heading}", justify="right", no_wrap=True)
 
-    for row in worksheet_data[1::1]:
+    for row in worksheet_data[1:]:
         table.add_row(*row)
 
     console.print(table)
