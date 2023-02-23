@@ -42,12 +42,12 @@ def choose_utilitie():
     Calls the appropriate utility function based on the users selection.
     """
     while True:
-        console.print("Main menu.\n", style="title")
-        console.print("Enter 1 to manage 'electricity' worksheet.", style="choice")
-        console.print("Enter 2 to manage 'broadband' worksheet.", style="choice")
-        console.print("Enter 3 to manage 'food' worksheet.", style="choice")
-        console.print("Enter 4 to manage 'gas' worksheet.\n", style="choice")
-        option = input("Enter your choice:\n")
+        console.print(" Main menu.\n", style="title")
+        console.print(" Enter 1 to manage 'electricity' worksheet.", style="choice")
+        console.print(" Enter 2 to manage 'broadband' worksheet.", style="choice")
+        console.print(" Enter 3 to manage 'food' worksheet.", style="choice")
+        console.print(" Enter 4 to manage 'gas' worksheet.\n", style="choice")
+        option = input(" Enter your choice:\n")
         if option == '1':
             edit_worksheet('electricity')
         elif option == '2':
@@ -65,13 +65,13 @@ def edit_worksheet(worksheet):
     Choice of the relevant worksheets for editing.
     """
     while True:
-        console.print(f"\nActions with {worksheet} worksheet:\n", style="title")
-        console.print("Enter 1 to 'add' one row.", style="choice")
-        console.print("Enter 2 to 'delete' last row.", style="choice")
-        console.print("Enter 3 to check 'statistics'.", style="choice")
-        console.print("Enter 4 to see the 'table'.", style="choice")
-        console.print("Enter 0 to go 'back'.\n", style="choice")
-        option = input("Enter your choice:\n")
+        console.print(f"\n Actions with {worksheet} worksheet:\n", style="title")
+        console.print(" Enter 1 to 'add' one row.", style="choice")
+        console.print(" Enter 2 to 'delete' last row.", style="choice")
+        console.print(" Enter 3 to check 'statistics'.", style="choice")
+        console.print(" Enter 4 to see the 'table'.", style="choice")
+        console.print(" Enter 0 to go 'back'.\n", style="choice")
+        option = input(" Enter your choice:\n")
         if option == '1':
             if worksheet == 'electricity':
                 data = get_data_with_meter(worksheet)
@@ -86,7 +86,7 @@ def edit_worksheet(worksheet):
                 data = get_data_without_meter(worksheet)
                 update_worksheet(data, worksheet)
             else:
-                print(f"Action is not ready for worksheet {worksheet}!\n", style="error")
+                print(f" Action is not ready for worksheet {worksheet}!\n", style="error")
                 main()
         elif option == '2':
             delete_last_row(worksheet)
@@ -98,7 +98,7 @@ def edit_worksheet(worksheet):
             print()
             main()
         else:
-            console.print("There is no such option. Retry your input.", style="error")
+            console.print(" There is no such option. Retry your input.", style="error")
 
 
 def statistics(worksheet):
@@ -106,12 +106,12 @@ def statistics(worksheet):
     Shows statistics for relevant worksheet.
     """
     while True:
-        console.print(f"\nSelect statistics from {worksheet} worksheet.\n", style="title")
-        console.print("Enter 1 to show statistics 'at all'.", style="choice")
-        console.print("Enter 2 to show statistics for 'last month'.", style="choice")
-        console.print("Enter 3 to show statistics for 'last 3 months'.", style="choice")
-        console.print("Enter 0 to go 'back'.", style="choice")
-        option = input("\nEnter your choice:\n")
+        console.print(f"\n Select statistics from {worksheet} worksheet.\n", style="title")
+        console.print(" Enter 1 to show statistics 'at all'.", style="choice")
+        console.print(" Enter 2 to show statistics for 'last month'.", style="choice")
+        console.print(" Enter 3 to show statistics for 'last 3 months'.", style="choice")
+        console.print(" Enter 0 to go 'back'.", style="choice")
+        option = input("\n Enter your choice:\n")
         if option == '1':
             statistics_average_all(worksheet)
         if option == '2':
@@ -123,7 +123,7 @@ def statistics(worksheet):
         elif option == '0':
             edit_worksheet(worksheet)
         else:
-            console.print("There is no such option. Retry your input.", style="error")
+            console.print(" There is no such option. Retry your input.", style="error")
 
 # Vizualize function to see the table
 
@@ -159,10 +159,10 @@ def statistics_average_all(worksheet):
         costs_sum = costs_sum + (int(days) * float(cost_per_day))
         days_sum = days_sum + int(days)
     average = round((costs_sum / days_sum), 2)
-    console.print(f"\nStatistics for all time from {worksheet} worksheet.\n", style="title")
-    console.print(f"Total number of days: {days_sum}.", style="description")
-    console.print(f"Total costs for all time: {round(costs_sum, 2)}.", style="description")
-    console.print(f"Average cost per day for all time: {average}.", style="description")
+    console.print(f"\n Statistics for all time from {worksheet} worksheet.\n", style="title")
+    console.print(f" Total number of days: {days_sum}.", style="description")
+    console.print(f" Total costs for all time: {round(costs_sum, 2)}.", style="description")
+    console.print(f" Average cost per day for all time: {average}.", style="description")
 
     statistics(worksheet)
 
@@ -195,13 +195,13 @@ def statistics_average_term(worksheet, term):
     else:
         costs_sum_term = costs_sum
     if term == 30:
-        console.print(f"\nStatistics for last month from {worksheet} worksheet.\n", style="title")
-        console.print(f"Total costs for last month: {round(costs_sum_term, 2)}.", style="description")
-        console.print(f"Average cost per day for last month: {average}.", style="description")
+        console.print(f"\n Statistics for last month from {worksheet} worksheet.\n", style="title")
+        console.print(f" Total costs for last month: {round(costs_sum_term, 2)}.", style="description")
+        console.print(f" Average cost per day for last month: {average}.", style="description")
     elif term == 91:
-        console.print(f"\nStatistics for last 3 months from {worksheet} worksheet.\n", style="title")
-        console.print(f"Total costs for last 3 months: {round(costs_sum_term, 2)}.", style="description")
-        console.print(f"Average cost per day for last 3 months: {average}.", style="description")
+        console.print(f"\n Statistics for last 3 months from {worksheet} worksheet.\n", style="title")
+        console.print(f" Total costs for last 3 months: {round(costs_sum_term, 2)}.", style="description")
+        console.print(f" Average cost per day for last 3 months: {average}.", style="description")
 
     statistics(worksheet)
 
@@ -214,15 +214,15 @@ def get_data_with_meter(worksheet):
     via the terminal, which must date, be meter reading and price.
     The loops will repeatedly request data, until it is valid.
     """
-    console.print(f"\nPlease enter {worksheet} data.", style="description")
-    console.print("Data should be: date, meter reading and unit price.", style="description")
+    console.print(f"\n Please enter {worksheet} data.", style="description")
+    console.print(" Data should be: date, meter reading and unit price.", style="description")
 
     while True:
 
         today = date.today().strftime("%d.%m.%Y")
         last_date = SHEET.worksheet(worksheet).get_all_values()[-1][0]
-        console.print("\nEnter the date. Leave blank to enter today's date.", style="choice")
-        date_input = input(f"Last entered date is: {last_date}. Today is: {today}.\n")
+        console.print("\n Enter the date. Leave blank to enter today's date.", style="choice")
+        date_input = input(f" Last entered date is: {last_date}. Today is: {today}.\n")
         validated_date = validate_date(worksheet, date_input, last_date)
 
         if validated_date:
@@ -230,16 +230,16 @@ def get_data_with_meter(worksheet):
             while True:
 
                 last_meter_reading = SHEET.worksheet(worksheet).get_all_values()[-1][1]
-                console.print("\nEnter meter reading.", style="choice")
-                meter_reading = input(f"Previous value: {last_meter_reading}.\n")
+                console.print("\n Enter meter reading.", style="choice")
+                meter_reading = input(f" Previous value: {last_meter_reading}.\n")
                 validated_meter = validate_meter(meter_reading, worksheet)
 
                 if validated_meter:
 
                     while True:
                         last_price = SHEET.worksheet(worksheet).get_all_values()[-1][2]
-                        console.print("\nEnter the price, €.", style="choice")
-                        price_input = input(f"Leave blank for previous price: {last_price}€.\n")
+                        console.print("\n Enter the price, €.", style="choice")
+                        price_input = input(f" Leave blank for previous price: {last_price}€.\n")
 
                         validated_price = validate_price(price_input, last_price)
                         if validated_price:
@@ -262,15 +262,15 @@ def get_data_without_meter(worksheet):
     via the terminal, which must be date and price.
     The loops will repeatedly request data, until it is valid.
     """
-    console.print(f"\nPlease enter {worksheet} data.", style="description")
-    console.print("Data should be: date and price from last bill.", style="description")
+    console.print(f"\n Please enter {worksheet} data.", style="description")
+    console.print(" Data should be: date and price from last bill.", style="description")
 
     while True:
 
         today = date.today().strftime("%d.%m.%Y")
         last_date = SHEET.worksheet(worksheet).get_all_values()[-1][0]
-        console.print("\nEnter the date. Leave blank to enter today's date.", style="choice")
-        date_input = input(f"Last entered date is: {last_date}. Today is: {today}.\n")
+        console.print("\n Enter the date. Leave blank to enter today's date.", style="choice")
+        date_input = input(f" Last entered date is: {last_date}. Today is: {today}.\n")
         validated_date = validate_date(worksheet, date_input, last_date)
 
         if validated_date:
@@ -278,8 +278,8 @@ def get_data_without_meter(worksheet):
             while True:
 
                 last_price = SHEET.worksheet(worksheet).get_all_values()[-1][1]
-                console.print("\nEnter the price, €.", style="choice")
-                price_input = input(f"Leave blank for previous price: {last_price}€.\n")
+                console.print("\n Enter the price, €.", style="choice")
+                price_input = input(f" Leave blank for previous price: {last_price}€.\n")
                 validated_price = validate_price(price_input, last_price)
 
                 if validated_price:
@@ -300,7 +300,7 @@ def calculate_data(data, worksheet):
     between the last data and the entered one.
     Calculation of average utility consumption per day and cost per day.
     """
-    console.print("\nCalculating...", style="success")
+    console.print("\n Calculating...", style="success")
     last_data = SHEET.worksheet(worksheet).get_all_values()[-1]
     if worksheet == 'electricity': # calculating meeter reading
         # Calculation of how much electricity has been spent since the last measurement
@@ -333,7 +333,7 @@ def calculate_data(data, worksheet):
         consumption = float(last_data[1]) / diff_days_num
         consumption_rounded = round(consumption, 2)
         data.append(str(consumption_rounded))
-    console.print("\ncalculation finished.", style="success")
+    console.print("\n calculation finished.", style="success")
 
     return data
 
@@ -359,15 +359,15 @@ def validate_meter(value, worksheet):
             raise ValueError(
                 f"new meter value {new_meter_reading} cannot be less then previous {last_meter_reading}"
             )
-        console.print("Meter readings is valid.", style="success")
+        console.print(" Meter readings is valid.", style="success")
 
     except ValueError as error:
         error_string = str(error)
         if error_string.startswith("could not convert string to float"):
-            console.print("Meter readings do not support word or letter input,", style="error")
-            console.print("enter numbers: decimals must be separated by a dot, please try again.", style="error")
+            console.print(" Meter readings do not support word or letter input,", style="error")
+            console.print(" enter numbers: decimals must be separated by a dot, please try again.", style="error")
         else:
-            console.print(f"Invalid data: {error}, please try again.", style="error")
+            console.print(f" Invalid data: {error}, please try again.", style="error")
         return False
 
     return new_meter_reading
@@ -384,28 +384,28 @@ def validate_price(value, last_price):
     try:
         if value == '':
             value = last_price
-            console.print(f"No date provided, entering last known price: {value}€.", style="success")
+            console.print(f" No date provided, entering last known price: {value}€.", style="success")
             return value
 
         float_value = float(value)
 
         if float_value == 0:
-            console.print("Utility cannot be free, please try again.", style="error")
+            console.print(" Utility cannot be free, please try again.", style="error")
             return False
         elif float_value < 0:
-            console.print("Price cannot be negative, please try again.", style="error")
+            console.print(" Price cannot be negative, please try again.", style="error")
             return False
 
-        console.print(f"Price {float_value}€ is valid.", style="success")
+        console.print(f" Price {float_value}€ is valid.", style="success")
         return float_value
 
     except ValueError as error:
         error_string = str(error)
         if error_string.startswith("could not convert string to float"):
-            console.print("Price don't support word or letter input, enter numbers:", style="error")
-            console.print("decimals must be separated by a dot, please try again.", style="error")
+            console.print(" Price don't support word or letter input, enter numbers:", style="error")
+            console.print(" decimals must be separated by a dot, please try again.", style="error")
         else:
-            print(f"Invalid data: {error}, please try again.", style="error")
+            print(f" Invalid data: {error}, please try again.", style="error")
         return False
 
 
@@ -429,11 +429,11 @@ def validate_date(worksheet, value, last_date):
             today_value = datetime.strptime(today, date_format)
 
             if last_date_value == today_value:
-                console.print(f"Entered date {value} cannot be the same day as last entered date {last_date}.", style="error")
-                console.print("Come back tomorrow.\n", style="description")
+                console.print(f" Entered date {value} cannot be the same day as last entered date {last_date}.", style="error")
+                console.print(" Come back tomorrow.\n", style="description")
                 edit_worksheet(worksheet)
 
-            console.print(f"No date provided, entering today's date: {value}", style="success")
+            console.print(f" No date provided, entering today's date: {value}", style="success")
             return value
 
         date_value = datetime.strptime(value, date_format)
@@ -441,30 +441,30 @@ def validate_date(worksheet, value, last_date):
         today_value = datetime.strptime(today, date_format)
 
         if date_value == last_date_value:
-            console.print(f"Entered date {value} cannot be the same day as last entered day {last_date}.", style="error")
-            console.print("Try again or leave blank to enter today's date or exit if today is the last entered date.", style="description")
+            console.print(f" Entered date {value} cannot be the same day as last entered day {last_date}.", style="error")
+            console.print(" Try again or leave blank to enter today's date or exit if today is the last entered date.", style="description")
             return False
 
         if date_value < last_date_value:
-            console.print(f"Entered date {value} cannot be before or equal to the last date {last_date}.", style="error")
+            console.print(f" Entered date {value} cannot be before or equal to the last date {last_date}.", style="error")
             return False
 
         if date_value > today_value:
-            console.print(f"Entered date {value} cannot be in the future. Today is {today}.", style="error")
+            console.print(f" Entered date {value} cannot be in the future. Today is {today}.", style="error")
             return False
 
-        console.print("Date is valid.", style="success")
+        console.print(" Date is valid.", style="success")
         return value
 
     except ValueError as error:
         error_string = str(error)
         if error_string.startswith("time data"):
-            console.print("Date doesn't support word or letter input,", style="error")
-            console.print("enter numbers: first the day, then the month", style="error")
-            console.print("and finally the year (four digits), the numbers", style="error")
-            console.print("must be separated by a dot, please try again.", style="error")
+            console.print(" Date doesn't support word or letter input,", style="error")
+            console.print(" enter numbers: first the day, then the month", style="error")
+            console.print(" and finally the year (four digits), the numbers", style="error")
+            console.print(" must be separated by a dot, please try again.", style="error")
         else:
-            console.print(f"Invalid data: {error} please try again.", style="error")
+            console.print(f" Invalid data: {error} please try again.", style="error")
         return False
 
 # Update functions
@@ -475,10 +475,10 @@ def update_worksheet(data, worksheet):
     and a string with the name of the worksheet.
     Update the worksheet with the data provided.
     """
-    console.print(f"\nUpdating {worksheet} worksheet...\n", style="success")
+    console.print(f"\n Updating {worksheet} worksheet...\n", style="success")
     worksheet_to_update = SHEET.worksheet(worksheet)
     worksheet_to_update.append_row(data)
-    console.print(f"{worksheet} worksheet updated successfully.", style="success")
+    console.print(f" {worksheet} worksheet updated successfully.", style="success")
     edit_worksheet(worksheet)
 
 
@@ -487,32 +487,32 @@ def delete_last_row(worksheet):
     Deleting the last row in the relevant worksheet.
     """
     while True:
-        console.print(f"\nAre you sure you want to delete the last row in the {worksheet} worksheet?\n", style="title")
-        console.print(f"Enter '1' to confirm deletion of the last row on the {worksheet} worksheet.", style="choice")
-        console.print("Enter '0' to cancel and go back.\n", style="choice")
-        confirm = input("Enter your choice:\n")
+        console.print(f"\n Are you sure you want to delete the last row in the {worksheet} worksheet?\n", style="title")
+        console.print(f" Enter '1' to confirm deletion of the last row on the {worksheet} worksheet.", style="choice")
+        console.print(" Enter '0' to cancel and go back.\n", style="choice")
+        confirm = input(" Enter your choice:\n")
         if confirm == '1':
             worksheet_del_last = SHEET.worksheet(worksheet)
             worksheet_all_values = SHEET.worksheet(worksheet).get_all_values()
             count_rows_data = len(worksheet_all_values)
             if count_rows_data > 2:
                 worksheet_del_last.delete_rows(count_rows_data)
-                console.print(f"The last row on the {worksheet} worksheet has been removed.", style="success")
+                console.print(f" The last row on the {worksheet} worksheet has been removed.", style="success")
                 edit_worksheet(worksheet)
             else:
-                console.print("It is forbidden to delete the original information.", style="error")
+                console.print(" It is forbidden to delete the original information.", style="error")
                 edit_worksheet(worksheet)
         elif confirm == '0':
             edit_worksheet(worksheet)
         else:
-            console.print("There is no such option. Retry your input.", style="error")
+            console.print(" There is no such option. Retry your input.", style="error")
 
 # Program lunch
 
-console.print("\nWelcome to v.2.0.0!\n", style="title")
-console.print("This program is designed to account for utilities.", style="description")
-console.print("You can select a utility service and then the action you want", style="description")
-console.print("to perform or view the information.\n", style="description")
-console.print("To exit program, just close the tab.", style="description")
-console.print("To restart program, click button above: 'Run program'.\n", style="description")
+console.print("\n Welcome to v.2.0.1!\n", style="title")
+console.print(" This program is designed to account for utilities.", style="description")
+console.print(" You can select a utility service and then the action you want", style="description")
+console.print(" to perform or view the information.\n", style="description")
+console.print(" To exit program, just close the tab.", style="description")
+console.print(" To restart program, click button above: 'Run program'.\n", style="description")
 main()
