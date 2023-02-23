@@ -3,6 +3,7 @@ from datetime import datetime
 from rich.console import Console
 from rich.table import Table
 from rich.theme import Theme
+from rich import box
 import gspread
 from google.oauth2.service_account import Credentials
 
@@ -132,7 +133,9 @@ def visualize(worksheet):
     Build vizual viewing of a relevant worksheet.
     """
     worksheet_data = SHEET.worksheet(worksheet).get_all_values()
-    table = Table(title=f"\nTable of {worksheet} worksheet")
+    # table = Table(title=f"\nTable of {worksheet} worksheet")
+    table = Table(box=box.MINIMAL_DOUBLE_HEAD)
+    
 
     for heading in worksheet_data[0]:
         table.add_column(f"{heading}", justify="right", no_wrap=True)
@@ -509,7 +512,7 @@ def delete_last_row(worksheet):
 
 # Program lunch
 
-console.print("\n Welcome to v.2.0.1!\n", style="title")
+console.print("\n Welcome to v.2.1.1!\n", style="title")
 console.print(" This program is designed to account for utilities.", style="description")
 console.print(" You can select a utility service and then the action you want", style="description")
 console.print(" to perform or view the information.\n", style="description")
