@@ -74,7 +74,7 @@ def edit_worksheet(worksheet):
         option = input("Enter your choice:\n")
         if option == '1':
             if worksheet == 'electricity':
-                data = get_electricity_data(worksheet)
+                data = get_data_with_meter(worksheet)
                 update_worksheet(data, worksheet)
             elif worksheet == 'food':
                 data = get_data_without_meter(worksheet)
@@ -207,20 +207,20 @@ def statistics_average_term(worksheet, term):
 
 # Get functions
 
-def get_electricity_data(worksheet):
+def get_data_with_meter(worksheet):
     """
-    Gets electricity, date and price input from the user.
+    Gets date, meter reading and price input from the user.
     Run a while loops to collect a valid data from the user
-    via the terminal, which must be meter reading, date and price.
+    via the terminal, which must date, be meter reading and price.
     The loops will repeatedly request data, until it is valid.
     """
-    console.print("\nPlease enter electricity data.", style="description")
-    console.print("Data should be: date, meter reading and price per kWh.", style="description")
+    console.print(f"\nPlease enter {worksheet} data.", style="description")
+    console.print("Data should be: date, meter reading and unit price.", style="description")
 
     while True:
 
         today = date.today().strftime("%d.%m.%Y")
-        last_date = SHEET.worksheet('electricity').get_all_values()[-1][0]
+        last_date = SHEET.worksheet(worksheet).get_all_values()[-1][0]
         console.print("\nEnter the date. Leave blank to enter today's date.", style="choice")
         date_input = input(f"Last entered date is: {last_date}. Today is: {today}.\n")
         validated_date = validate_date(worksheet, date_input, last_date)
@@ -229,15 +229,15 @@ def get_electricity_data(worksheet):
 
             while True:
 
-                last_electricity_meter_reading = SHEET.worksheet('electricity').get_all_values()[-1][1]
+                last_meter_reading = SHEET.worksheet(worksheet).get_all_values()[-1][1]
                 console.print("\nEnter meter reading.", style="choice")
-                electricity_meter_reading = input(f"Previous value: {last_electricity_meter_reading}.\n")
-                validated_electricity_meter = validate_electricity_meter(electricity_meter_reading)
+                meter_reading = input(f"Previous value: {last_meter_reading}.\n")
+                validated_meter = validate_meter(meter_reading, worksheet)
 
-                if validated_electricity_meter:
+                if validated_meter:
 
                     while True:
-                        last_price = SHEET.worksheet('electricity').get_all_values()[-1][2]
+                        last_price = SHEET.worksheet(worksheet).get_all_values()[-1][2]
                         console.print("\nEnter the price, €.", style="choice")
                         price_input = input(f"Leave blank for previous price: {last_price}€.\n")
 
@@ -249,10 +249,10 @@ def get_electricity_data(worksheet):
 
             break
 
-    electricity_data = [str(validated_date), str(validated_electricity_meter), str(validated_price)]
-    calculated_electricity_data = calculate_data(electricity_data, worksheet)
+    entered_data = [str(validated_date), str(validated_meter), str(validated_price)]
+    calculated_data = calculate_data(entered_data, worksheet)
 
-    return calculated_electricity_data
+    return calculated_data
 
 
 def get_data_without_meter(worksheet):
@@ -339,9 +339,9 @@ def calculate_data(data, worksheet):
 
 # Validate functions
 
-def validate_electricity_meter(value):
+def validate_meter(value, worksheet):
     """
-    Recieves a date as a string. Inside the try,
+    Recieves a data as a string. Inside the try,
     checks if it's not empty string, and then converts it to float.
     Raises ValueError if string can not be converted into float.
     Checks if it's not less than previous meter reading.
@@ -349,17 +349,17 @@ def validate_electricity_meter(value):
     try:
         if value == '':
             raise ValueError(
-                "electricity meter value cannot be empty"
+                "meter readings value cannot be empty"
             )
 
-        new_electricity_meter_reading = float(value)
-        last_electricity_meter_reading = float(SHEET.worksheet('electricity').get_all_values()[-1][1])
+        new_meter_reading = float(value)
+        last_meter_reading = float(SHEET.worksheet(worksheet).get_all_values()[-1][1])
 
-        if new_electricity_meter_reading < last_electricity_meter_reading:
+        if new_meter_reading < last_meter_reading:
             raise ValueError(
-                f"new electricity meter value {new_electricity_meter_reading} cannot be less then previous {last_electricity_meter_reading}"
+                f"new meter value {new_meter_reading} cannot be less then previous {last_meter_reading}"
             )
-        console.print("Electricity meter is valid.", style="success")
+        console.print("Meter readings is valid.", style="success")
 
     except ValueError as error:
         error_string = str(error)
@@ -370,7 +370,7 @@ def validate_electricity_meter(value):
             console.print(f"Invalid data: {error}, please try again.", style="error")
         return False
 
-    return new_electricity_meter_reading
+    return new_meter_reading
 
 
 def validate_price(value, last_price):
