@@ -1,10 +1,15 @@
-1. Command to install dependencies:
+1. Commands to install dependencies:
+
 pip3 install gspread google-auth
 
+pip3 install rich
+
 2. Commant to run a programm:
+
 python3 run.py
 
 3. Command for deployment to Heroku:
+
 pip3 freeze > requirements.txt
 
 ![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)

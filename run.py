@@ -1,5 +1,7 @@
 from datetime import date
 from datetime import datetime
+from rich.console import Console
+from rich.table import Table
 import gspread
 from google.oauth2.service_account import Credentials
 
@@ -123,8 +125,20 @@ def statistics(worksheet):
 
 def visualize(worksheet):
     """
+    Build vizual viewing of a relevant worksheet.
     """
-    print("Function is not ready yet.")
+    worksheet_data = SHEET.worksheet(worksheet).get_all_values()
+    table = Table(title=f"\nTable of {worksheet} worksheet")
+    
+    for heading in worksheet_data[0]:
+        table.add_column(f"{heading}")
+    
+    for row in worksheet_data[1::1]:
+        table.add_row(*row)
+    
+    console = Console()
+    console.print(table)
+
 
 # Calculating statistics function
 
