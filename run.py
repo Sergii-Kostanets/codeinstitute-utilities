@@ -2,6 +2,7 @@ from datetime import date
 from datetime import datetime
 from rich.console import Console
 from rich.table import Table
+from rich.theme import Theme
 import gspread
 from google.oauth2.service_account import Credentials
 
@@ -16,6 +17,14 @@ CREDS = Credentials.from_service_account_file('creds.json')
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('codeinstitute-utilities')
+custom_theme = Theme({
+    "error": "red3", 
+    "success": "green3", 
+    "title": "bold bright_green", 
+    "choice": "gold1",
+    "description": "cornflower_blue"
+    })
+console = Console(theme=custom_theme)
 
 # Main function
 
@@ -33,12 +42,11 @@ def choose_utilitie():
     Calls the appropriate utility function based on the users selection.
     """
     while True:
-        print("Main menu.\n")
-        print("Enter '1' to manage electricity worksheet.")
-        print("Enter '2' to manage broadband worksheet.")
-        print("Enter '3' to manage food worksheet.")
-        print("Enter '4' to manage gas worksheet.")
-        print()
+        console.print("Main menu.\n", style="title")
+        console.print("Enter 1 to manage 'electricity' worksheet.", style="choice")
+        console.print("Enter 2 to manage 'broadband' worksheet.", style="choice")
+        console.print("Enter 3 to manage 'food' worksheet.", style="choice")
+        console.print("Enter 4 to manage 'gas' worksheet.\n", style="choice")
         option = input("Enter your choice:\n")
         if option == '1':
             edit_worksheet('electricity')
@@ -49,7 +57,7 @@ def choose_utilitie():
         elif option == '4':
             edit_worksheet('gas')
         else:
-            print("\nCheck your choice\n")
+            console.print("There is no such option. Retry your input.\n", style="error")
 
 
 def edit_worksheet(worksheet):
@@ -57,31 +65,28 @@ def edit_worksheet(worksheet):
     Choice of the relevant worksheets for editing.
     """
     while True:
-        print()
-        print(f"Actions with {worksheet} worksheet:")
-        print()
-        print("Enter '1' to add one row.")
-        print("Enter '2' to delete last row.")
-        print("Enter '3' to check statistics.")
-        print("Enter '4' to see the table.")
-        print("Enter '0' to go back.")
-        print()
+        console.print(f"\nActions with {worksheet} worksheet:\n", style="title")
+        console.print("Enter 1 to 'add' one row.", style="choice")
+        console.print("Enter 2 to 'delete' last row.", style="choice")
+        console.print("Enter 3 to check 'statistics'.", style="choice")
+        console.print("Enter 4 to see the 'table'.", style="choice")
+        console.print("Enter 0 to go 'back'.\n", style="choice")
         option = input("Enter your choice:\n")
         if option == '1':
             if worksheet == 'electricity':
                 data = get_electricity_data(worksheet)
                 update_worksheet(data, worksheet)
             elif worksheet == 'food':
-                data = get_food_data(worksheet)
+                data = get_data_without_meter(worksheet)
                 update_worksheet(data, worksheet)
             elif worksheet == 'broadband':
-                data = get_broadband_data(worksheet)
+                data = get_data_without_meter(worksheet)
                 update_worksheet(data, worksheet)
             elif worksheet == 'gas':
-                data = get_gas_data(worksheet)
+                data = get_data_without_meter(worksheet)
                 update_worksheet(data, worksheet)
             else:
-                print(f"Action is not ready for worksheet {worksheet}!\n")
+                print(f"Action is not ready for worksheet {worksheet}!\n", style="error")
                 main()
         elif option == '2':
             delete_last_row(worksheet)
@@ -93,7 +98,7 @@ def edit_worksheet(worksheet):
             print()
             main()
         else:
-            print("\nCheck your choice")
+            console.print("There is no such option. Retry your input.", style="error")
 
 
 def statistics(worksheet):
@@ -101,15 +106,12 @@ def statistics(worksheet):
     Shows statistics for relevant worksheet.
     """
     while True:
-        print()
-        print(f"Statistics from {worksheet} worksheet.")
-        print()
-        print("Enter '1' to show average spendings per day at all.")
-        print("Enter '2' to show average spendings per day for last month.")
-        print("Enter '3' to show average spendings per day for last 3 months.")
-        print("Enter '0' to go back.")
-        print()
-        option = input("Enter your choice:\n")
+        console.print(f"\nSelect statistics from {worksheet} worksheet.\n", style="title")
+        console.print("Enter 1 to show statistics 'at all'.", style="choice")
+        console.print("Enter 2 to show statistics for 'last month'.", style="choice")
+        console.print("Enter 3 to show statistics for 'last 3 months'.", style="choice")
+        console.print("Enter 0 to go 'back'.", style="choice")
+        option = input("\nEnter your choice:\n")
         if option == '1':
             statistics_average_all(worksheet)
         if option == '2':
@@ -129,16 +131,14 @@ def visualize(worksheet):
     """
     worksheet_data = SHEET.worksheet(worksheet).get_all_values()
     table = Table(title=f"\nTable of {worksheet} worksheet")
-    
+
     for heading in worksheet_data[0]:
         table.add_column(f"{heading}")
-    
+
     for row in worksheet_data[1::1]:
         table.add_row(*row)
-    
-    console = Console()
-    console.print(table)
 
+    console.print(table)
 
 # Calculating statistics function
 
@@ -157,9 +157,10 @@ def statistics_average_all(worksheet):
         costs_sum = costs_sum + (int(days) * float(cost_per_day))
         days_sum = days_sum + int(days)
     average = round((costs_sum / days_sum), 2)
-    print(f"\nTotal number of days: {days_sum}.")
-    print(f"Total costs for all time: {round(costs_sum, 2)}.")
-    print(f"Average cost per day for all time: {average}.")
+    console.print(f"\nStatistics for all time from {worksheet} worksheet.\n", style="title")
+    console.print(f"Total number of days: {days_sum}.", style="description")
+    console.print(f"Total costs for all time: {round(costs_sum, 2)}.", style="description")
+    console.print(f"Average cost per day for all time: {average}.", style="description")
 
     statistics(worksheet)
 
@@ -192,11 +193,13 @@ def statistics_average_term(worksheet, term):
     else:
         costs_sum_term = costs_sum
     if term == 30:
-        print(f"Total costs for last month: {round(costs_sum_term, 2)}.")
-        print(f"Average cost per day for last month: {average}.")
+        console.print(f"\nStatistics for last month from {worksheet} worksheet.\n", style="title")
+        console.print(f"Total costs for last month: {round(costs_sum_term, 2)}.", style="description")
+        console.print(f"Average cost per day for last month: {average}.", style="description")
     elif term == 91:
-        print(f"Total costs for last 3 months: {round(costs_sum_term, 2)}.")
-        print(f"Average cost per day for last 3 months: {average}.")
+        console.print(f"\nStatistics for last 3 months from {worksheet} worksheet.\n", style="title")
+        console.print(f"Total costs for last 3 months: {round(costs_sum_term, 2)}.", style="description")
+        console.print(f"Average cost per day for last 3 months: {average}.", style="description")
 
     statistics(worksheet)
 
@@ -209,23 +212,23 @@ def get_electricity_data(worksheet):
     via the terminal, which must be meter reading, date and price.
     The loops will repeatedly request data, until it is valid.
     """
-    print("\nPlease enter electricity data.")
-    print("Data should be: date, meter reading and price per kWh.")
+    console.print("\nPlease enter electricity data.", style="description")
+    console.print("Data should be: date, meter reading and price per kWh.", style="description")
 
     while True:
 
         today = date.today().strftime("%d.%m.%Y")
         last_date = SHEET.worksheet('electricity').get_all_values()[-1][0]
-        print("\nEnter the date. Leave blank to enter today's date.")
+        console.print("\nEnter the date. Leave blank to enter today's date.", style="choice")
         date_input = input(f"Last entered date is: {last_date}. Today is: {today}.\n")
-        validated_date = validate_date(date_input, last_date)
+        validated_date = validate_date(worksheet, date_input, last_date)
 
         if validated_date:
 
             while True:
 
                 last_electricity_meter_reading = SHEET.worksheet('electricity').get_all_values()[-1][1]
-                print("\nEnter meter reading.")
+                console.print("\nEnter meter reading.", style="choice")
                 electricity_meter_reading = input(f"Previous value: {last_electricity_meter_reading}.\n")
                 validated_electricity_meter = validate_electricity_meter(electricity_meter_reading)
 
@@ -233,7 +236,7 @@ def get_electricity_data(worksheet):
 
                     while True:
                         last_price = SHEET.worksheet('electricity').get_all_values()[-1][2]
-                        print("\nEnter the price, €.")
+                        console.print("\nEnter the price, €.", style="choice")
                         price_input = input(f"Leave blank for previous price: {last_price}€.\n")
 
                         validated_price = validate_price(price_input, last_price)
@@ -250,31 +253,30 @@ def get_electricity_data(worksheet):
     return calculated_electricity_data
 
 
-def get_food_data(worksheet):
+def get_data_without_meter(worksheet):
     """
     Gets date and price input from the user.
     Run a while loops to collect a valid data from the user
     via the terminal, which must be date and price.
     The loops will repeatedly request data, until it is valid.
     """
-
-    print("\nPlease enter food data.")
-    print("Data should be: date and price from last bill.")
+    console.print(f"\nPlease enter {worksheet} data.", style="description")
+    console.print("Data should be: date and price from last bill.", style="description")
 
     while True:
 
         today = date.today().strftime("%d.%m.%Y")
-        last_date = SHEET.worksheet('food').get_all_values()[-1][0]
-        print("\nEnter the date. Leave blank to enter today's date.")
+        last_date = SHEET.worksheet(worksheet).get_all_values()[-1][0]
+        console.print("\nEnter the date. Leave blank to enter today's date.", style="choice")
         date_input = input(f"Last entered date is: {last_date}. Today is: {today}.\n")
-        validated_date = validate_date(date_input, last_date)
+        validated_date = validate_date(worksheet, date_input, last_date)
 
         if validated_date:
 
             while True:
 
-                last_price = SHEET.worksheet('food').get_all_values()[-1][1]
-                print("\nEnter the price, €.")
+                last_price = SHEET.worksheet(worksheet).get_all_values()[-1][1]
+                console.print("\nEnter the price, €.", style="choice")
                 price_input = input(f"Leave blank for previous price: {last_price}€.\n")
                 validated_price = validate_price(price_input, last_price)
 
@@ -283,86 +285,10 @@ def get_food_data(worksheet):
 
             break
 
-    food_data = [str(validated_date), str(validated_price)]
-    calculated_food_data = calculate_data(food_data, worksheet)
+    entered_data = [str(validated_date), str(validated_price)]
+    calculated_data = calculate_data(entered_data, worksheet)
 
-    return calculated_food_data
-
-
-def get_broadband_data(worksheet):
-    """
-    Gets date and price input from the user.
-    Run a while loops to collect a valid data from the user
-    via the terminal, which must be date and price.
-    The loops will repeatedly request data, until it is valid.
-    """
-    print("\nPlease enter broadband data.")
-    print("Data should be: date and price from last bill.")
-
-    while True:
-
-        today = date.today().strftime("%d.%m.%Y")
-        last_date = SHEET.worksheet('broadband').get_all_values()[-1][0]
-        print("\nEnter the date. Leave blank to enter today's date.")
-        date_input = input(f"Last entered date is: {last_date}. Today is: {today}.\n")
-        validated_date = validate_date(date_input, last_date)
-
-        if validated_date:
-
-            while True:
-
-                last_price = SHEET.worksheet('broadband').get_all_values()[-1][1]
-                print("\nEnter the price, €.")
-                price_input = input(f"Leave blank for previous price: {last_price}€.\n")
-                validated_price = validate_price(price_input, last_price)
-
-                if validated_price:
-                    break
-
-            break
-
-    broadband_data = [str(validated_date), str(validated_price)]
-    calculated_broadband_data = calculate_data(broadband_data, worksheet)
-
-    return calculated_broadband_data
-
-
-def get_gas_data(worksheet):
-    """
-    Gets date and price input from the user.
-    Run a while loops to collect a valid data from the user
-    via the terminal, which must be date and price.
-    The loops will repeatedly request data, until it is valid.
-    """
-    print("\nPlease enter gas data.")
-    print("Data should be: date and price from last bill.")
-
-    while True:
-
-        today = date.today().strftime("%d.%m.%Y")
-        last_date = SHEET.worksheet('gas').get_all_values()[-1][0]
-        print("\nEnter the date. Leave blank to enter today's date.")
-        date_input = input(f"Last entered date is: {last_date}. Today is: {today}.\n")
-        validated_date = validate_date(date_input, last_date)
-
-        if validated_date:
-
-            while True:
-
-                last_price = SHEET.worksheet('gas').get_all_values()[-1][1]
-                print("\nEnter the price, €.")
-                price_input = input(f"Leave blank for previous price: {last_price}€.\n")
-                validated_price = validate_price(price_input, last_price)
-
-                if validated_price:
-                    break
-
-            break
-
-    gas_data = [str(validated_date), str(validated_price)]
-    calculated_gas_data = calculate_data(gas_data, worksheet)
-
-    return calculated_gas_data
+    return calculated_data
 
 # Calculate function
 
@@ -372,9 +298,9 @@ def calculate_data(data, worksheet):
     between the last data and the entered one.
     Calculation of average utility consumption per day and cost per day.
     """
-    print("\nCalculating...")
+    console.print("\nCalculating...", style="success")
     last_data = SHEET.worksheet(worksheet).get_all_values()[-1]
-    if worksheet == 'electricity':
+    if worksheet == 'electricity': # calculating meeter reading
         # Calculation of how much electricity has been spent since the last measurement
         diff_meter = float(data[1]) - float(last_data[1])
         diff_meter_rounded = round(diff_meter, 1)
@@ -386,7 +312,7 @@ def calculate_data(data, worksheet):
     diff_days = new_date - prev_date
     diff_days_num = diff_days.days
     data.append(str(diff_days_num))
-    if worksheet == 'electricity':
+    if worksheet == 'electricity': # costs depends on meeter reading
         # Calculation of average electricity consumption per day since the last measurement
         consumption = diff_meter / diff_days_num
         consumption_rounded = round(consumption, 1)
@@ -395,17 +321,17 @@ def calculate_data(data, worksheet):
         cost = consumption * float(data[2])
         cost_rounded = round(cost, 2)
         data.append(str(cost_rounded))
-    elif worksheet == 'broadband':
+    elif worksheet == 'broadband': # bills after consumption
         # Calculation of average broadband price per day
         consumption = float(data[1]) / diff_days_num
         consumption_rounded = round(consumption, 2)
         data.append(str(consumption_rounded))
-    else:
+    else: # bills before consumption
         # Calculation of average utility price per day
         consumption = float(last_data[1]) / diff_days_num
         consumption_rounded = round(consumption, 2)
         data.append(str(consumption_rounded))
-    print("\nCalculation finished.")
+    console.print("\nCalculation finished.", style="success")
 
     return data
 
@@ -431,10 +357,15 @@ def validate_electricity_meter(value):
             raise ValueError(
                 f"new electricity meter value {new_electricity_meter_reading} cannot be less then previous {last_electricity_meter_reading}"
             )
-        print("Electricity meter is valid.")
+        console.print("Electricity meter is valid.", style="success")
 
-    except ValueError:
-        print("Invalid data: please try again.")
+    except ValueError as error:
+        error_string = str(error)
+        if error_string.startswith("could not convert string to float"):
+            console.print("Meter readings do not support word or letter input,", style="error")
+            console.print("enter numbers: decimals must be separated by a dot, please try again.", style="error")
+        else:
+            console.print(f"Invalid data: {error}, please try again.", style="error")
         return False
 
     return new_electricity_meter_reading
@@ -451,27 +382,32 @@ def validate_price(value, last_price):
     try:
         if value == '':
             value = last_price
-            print(f"No date provided, entering last known price: {value}€.")
+            console.print(f"No date provided, entering last known price: {value}€.", style="success")
             return value
 
         float_value = float(value)
 
         if float_value == 0:
-            print("Utility cannot be free, please try again.")
+            console.print("Utility cannot be free, please try again.", style="error")
             return False
         elif float_value < 0:
-            print("Price cannot be negative, please try again.")
+            console.print("Price cannot be negative, please try again.", style="error")
             return False
 
-        print(f"Price {float_value}€ is valid.")
+        console.print(f"Price {float_value}€ is valid.", style="success")
         return float_value
 
-    except ValueError:
-        print("Invalid data, please try again.")
+    except ValueError as error:
+        error_string = str(error)
+        if error_string.startswith("could not convert string to float"):
+            console.print("Price don't support word or letter input, enter numbers:", style="error")
+            console.print("decimals must be separated by a dot, please try again.", style="error")
+        else:
+            print(f"Invalid data: {error}, please try again.", style="error")
         return False
 
 
-def validate_date(value, last_date):
+def validate_date(worksheet, value, last_date):
     """
     Recieves a date as a string.
     Checks if it's empty string, to return today's date.
@@ -491,11 +427,11 @@ def validate_date(value, last_date):
             today_value = datetime.strptime(today, date_format)
 
             if last_date_value == today_value:
-                print(f"Entered date {value} cannot be the same day as last entered date {last_date}.")
-                print("Come back tomorrow.\n")
-                choose_utilitie()
+                console.print(f"Entered date {value} cannot be the same day as last entered date {last_date}.", style="error")
+                console.print("Come back tomorrow.\n", style="description")
+                edit_worksheet(worksheet)
 
-            print(f"No date provided, entering today's date: {value}")
+            console.print(f"No date provided, entering today's date: {value}", style="success")
             return value
 
         date_value = datetime.strptime(value, date_format)
@@ -503,12 +439,12 @@ def validate_date(value, last_date):
         today_value = datetime.strptime(today, date_format)
 
         if date_value == last_date_value:
-            print(f"Entered date {value} cannot be the same day as last entered day {last_date}.")
-            print("Try again or leave blank to enter today's date or exit if today is the last entered date.")
+            console.print(f"Entered date {value} cannot be the same day as last entered day {last_date}.", style="error")
+            console.print("Try again or leave blank to enter today's date or exit if today is the last entered date.", style="description")
             return False
 
         if date_value < last_date_value:
-            print(f"Entered date {value} cannot be before or equal to the last date {last_date}.")
+            console.print(f"Entered date {value} cannot be before or equal to the last date {last_date}.", style="error")
             return False
 
         if date_value > today_value:
@@ -564,8 +500,8 @@ def delete_last_row(worksheet):
 
 # Programm lunch
 
-print("\nWelcome to v.1.6.8!\n")
-print("This program is designed to account for utilities.")
-print("You can select a utility service and then the action you want to perform")
-print("or view the information.\n")
+console.print("\nWelcome to v.1.6.8!\n", style="title")
+console.print("This program is designed to account for utilities.", style="description")
+console.print("You can select a utility service and then the action you want to perform", style="description")
+console.print("or view the information.\n", style="description")
 main()
