@@ -362,7 +362,7 @@ def validate_meter(value, worksheet):
                 "meter readings value cannot be empty"
             )
 
-        new_meter_reading = float(value)
+        new_meter_reading = round(float(value), 1)
         last_meter_reading = float(SHEET.worksheet(worksheet).get_all_values()[-1][1])
 
         if new_meter_reading < last_meter_reading:
@@ -397,7 +397,7 @@ def validate_price(value, last_price):
             console.print(f" No date provided, entering last known price: {value}€.", style="success")
             return value
 
-        float_value = float(value)
+        float_value = round(float(value), 2)
 
         if float_value == 0:
             console.print(" Utility cannot be free, please try again.", style="error")
@@ -519,7 +519,7 @@ def delete_last_row(worksheet):
 
 # Program lunch
 
-console.print("\n Welcome \"Utility\" 'Control' 3!\n", style="title")
+console.print("\n Welcome 'Utility Control 3'!\n", style="title")
 console.print(" This program is designed to account for utilities.", style="description")
 console.print(" You can select a utility service and then the action you want", style="description")
 console.print(" to perform or view the information.\n", style="description")
