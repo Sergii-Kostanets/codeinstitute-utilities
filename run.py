@@ -1,11 +1,14 @@
+"""Module providing usage of Google Sheets"""
+import gspread
+"""Security access to Google Sheets API"""
+from google.oauth2.service_account import Credentials
+"""Module providing usage of date formatting and time delta for calculating"""
 from datetime import date
 from datetime import datetime
+"""Module providing styling of text and forming tables in the terminal"""
 from rich.console import Console
 from rich.table import Table
 from rich.theme import Theme
-# from rich import box
-import gspread
-from google.oauth2.service_account import Credentials
 
 
 SCOPE = [
@@ -369,7 +372,7 @@ def validate_meter(value, worksheet):
             raise ValueError(
                 f"new meter value {new_meter_reading} cannot be less then previous {last_meter_reading}"
             )
-        console.print(" Meter readings is valid.", style="success")
+        console.print(f" Meter readings {new_meter_reading} is valid.", style="success")
 
     except ValueError as error:
         error_string = str(error)
@@ -463,7 +466,7 @@ def validate_date(worksheet, value, last_date):
             console.print(f" Entered date {value} cannot be in the future. Today is {today}.", style="error")
             return False
 
-        console.print(" Date is valid.", style="success")
+        console.print(f" Date {value} is valid.", style="success")
         return value
 
     except ValueError as error:
