@@ -137,13 +137,20 @@ def visualize(worksheet):
     # table = Table(box=box.MINIMAL_DOUBLE_HEAD)
     
 
-    for heading in worksheet_data[0]:
-        table.add_column(f"{heading}", justify="right", no_wrap=True)
+    for heading in worksheet_data[0][:1]:
+        heading_splitted = heading.split(", ")
+        heading_joined = '\n'.join(map(str, heading_splitted))
+        table.add_column(f"{heading_joined}", justify="center", min_width=10)
+        
+    for heading in worksheet_data[0][1:]:
+        heading_splitted = heading.split(", ")
+        heading_joined = '\n'.join(map(str, heading_splitted))
+        table.add_column(f"{heading_joined}", justify="center", max_width=8)
 
     for row in worksheet_data[1:]:
         table.add_row(*row)
 
-    console.print(table)
+    console.print(table, justify="center")
 
 # Calculating statistics function
 
