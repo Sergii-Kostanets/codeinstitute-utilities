@@ -145,7 +145,7 @@ def visualize(worksheet):
     for heading in worksheet_data[0][1:]:
         heading_splitted = heading.split(", ")
         heading_joined = '\n'.join(map(str, heading_splitted))
-        table.add_column(f"{heading_joined}", justify="center", max_width=8)
+        table.add_column(f"{heading_joined}", justify="center")
 
     for row in worksheet_data[1:]:
         table.add_row(*row)
@@ -519,7 +519,7 @@ def delete_last_row(worksheet):
 
 # Program lunch
 
-console.print("\n Welcome to v.2.2.3!\n", style="title")
+console.print("\n Welcome to v.2.2.4!\n", style="title")
 console.print(" This program is designed to account for utilities.", style="description")
 console.print(" You can select a utility service and then the action you want", style="description")
 console.print(" to perform or view the information.\n", style="description")
