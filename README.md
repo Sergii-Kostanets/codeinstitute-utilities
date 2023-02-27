@@ -56,36 +56,75 @@ The 'Utility Control 3' application has a command line interface with a custom t
 
 ### Site Structure
 
-[Rock-Paper-Scissors-Lizard-Spock Game](https://sergii-kostanets.github.io/codeinstitute-rock-paper-scissors-lizard-spock/) website has only one page:
+The 'Utility Control 3' is a terminal based application that is being presented in a one page website. When the application starts the user will be presented with a short welcome message and a menu with 4 options. The menu consists of the utility choices: *electricity*, *broadband*, *food* and *gas*. Read more about the different choices in the [Features](<#features>) section.
 
-* [Main](index.html)
+In the top of the page there is also a 'Run Program' button that the user can use to reload the application if needed.
 
-The [main](index.html) page is the default loading page of the game.
+[Back to top](<#contents>)
+
+### Data Model
+To store all data in the application I made a choice to use [Google Sheets](https://www.google.co.uk/sheets/about/). All data in the application is being sent and retrieved from the Google Sheet.
+
+<details><summary><b>Name of workbook: <i>codeinstitute-utility</i></b></summary>
+
+![Google Sheet](readme/images/workbook.png)
+</details><br/>
+
+Each utility is stored on its own sheet.
+
+<details><summary><b>Name of electricity worksheet: <i>electricity</i></b></summary>
+
+![Google Sheet](readme/images/worksheet-electricity.png)
+</details><br/>
+
+<details><summary><b>Name of broadband worksheet: <i>broadband</i></b></summary>
+
+![Google Sheet](readme/images/worksheet-broadband.png)
+</details><br/>
+
+<details><summary><b>Name of food worksheet: <i>food</i></b></summary>
+
+![Google Sheet](readme/images/worksheet-food.png)
+</details><br/>
+
+<details><summary><b>Name of gas worksheet: <i>gas</i></b></summary>
+
+![Google Sheet](readme/images/worksheet-gas.png)
+</details><br/>
+
+This structure is intended to make it easy to add other utilities in the future. Utility bills are slightly different. Electricity is calculated based on the meter readings and the price per unit of consumed energy. Gas and food bills are paid before actual consumption, so the calculation of the consumption of these indicators is carried out only after entering new data. The bill for the broadband is issued after a certain period of use of this service.
+
+The worksheets for utilities without meter reading (*broadband*, *food* and *gas*) hold 4 columns with information such as *Date* in format *dd.mm.yyyy*, *Price* with currency *€*, *Days* quantity - *qt* and *Per day* expenses in *€*, that is being controlled from the application via Python.
+
+The worksheet for utilitie with meter reading (*electricity*) holds 7 columns with information such as *Date* in format *dd.mm.yyyy*, *Meter* in *kWh*, *Price* with currency *€*, *Cons.* which is consumption since the last measuring in *kWh*, *Days* quantity - *qt*, *Per day* consumption in *kWh* and *Per day* expenses in *€*, that is being controlled from the application via Python.
 
 [Back to top](<#contents>)
 
 ### Design Choices
 
 * #### Typography
-
-    The font chosen was 'Rubik' for for inscriptions in the game.
-  * 'Rubik' font corresponds to the spirit of the game, perfectly conveys the mood and goes well with the selected icons.
-  * Highlighting with different colors allows you to create an intuitive interface that contrasts well with itself and the background.
+    No specific typography is being used in the application. The font is just the standard font that is being used in the terminal.
 
 * #### Colour Scheme
+    'Utility Control 3' is a terminal based application. I have used the [Rich](https://rich.readthedocs.io/en/stable/introduction.html) library for Python to be able to extend the design opportunities.
 
-  * The color palette is bright and colorful, emphasizing the entertaining style of the game based on pure randomness without any elements of strategy or tactics.
-  * The colors of the main icons of the game are taken as a basis.
-
-![Colour Palette image](assets/images/readme-images/color-palette.png)
+![Colour Palette image](readme/images/color-palette.png)
 
 [Back to top](<#contents>)
 
 ## Features
 
-[Rock-Paper-Scissors-Lizard-Spock Game](https://sergii-kostanets.github.io/codeinstitute-rock-paper-scissors-lizard-spock/) contains many features that the user would be familiar with, such as a header with link for refreshing the page, footer with contact links.
+When the application starts it prints the welcome message and brief description, then calls the *main* function which launches the main menu. As stated in the [Site Structure](<#site-structure>) area the application consists of 4 similar areas (different utilities): *electricity*, *broadband*, *food*, and *gas*. The features are being explained more in detail in the [Existing Features](<#existing-features>) area below.
 
 ### Existing Features
+
+### Main Menu
+The Main Menu is quite straight forward and consists of 4 choices. See each choice being explained below.
+
+<details><summary><b>Main Menu</b></summary>
+
+![Main Menu](readme/assets/images/main_menu.png)
+</details><br/>
 
 * #### Header
 
