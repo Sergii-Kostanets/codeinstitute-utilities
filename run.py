@@ -246,7 +246,7 @@ def get_data_with_meter(worksheet):
 
                 last_meter_reading = SHEET.worksheet(worksheet).get_all_values()[-1][1]
                 console.print("\n Enter meter reading.", style="choice")
-                meter_reading = input(f" Previous value: {last_meter_reading}.\n")
+                meter_reading = input(f" Previous value: {last_meter_reading}\n")
                 validated_meter = validate_meter(meter_reading, worksheet)
 
                 if validated_meter:
