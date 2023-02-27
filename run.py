@@ -417,7 +417,7 @@ def validate_price(value, last_price):
     except ValueError as error:
         error_string = str(error)
         if error_string.startswith("could not convert string to float"):
-            console.print(" Price don't support word or letter input, enter numbers:", style="error")
+            console.print(" Price doesn't support word or letter input, enter numbers:", style="error")
             console.print(" decimals must be separated by a dot, please try again.", style="error")
         else:
             print(f" Invalid data: {error}, please try again.", style="error")

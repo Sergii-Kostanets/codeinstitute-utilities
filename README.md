@@ -29,12 +29,12 @@
   * [**Media**](<#media>)
 * [**Acknowledgements**](<#acknowledgements>)
 
-## Project
+# Project
 
-### Site Users Goal
+## Site Users Goal
 The user of 'Utility Control 3' wants to have access to an intuitive application that saves utility bills and calculates daily usage.
 
-### User Stories
+## User Stories
 I have included some user stories to clarify why particular feature matters. These will then be tested and confirmed in the [Testing](<#testing>) section.
 
 - As a user, I want to be able to add expense entries.
@@ -43,18 +43,18 @@ I have included some user stories to clarify why particular feature matters. The
 - As a user, I want to be able to view a table with all expense records.
 - As a user, I want to have an easy way to return to the main menu.
 
-### Site Owners Goal
+## Site Owners Goal
 The goal of the site owner is to provide an application where the user can enter utility expense data in a simple way, access all expense records, view expense statistics, and delete the entry in case of incorrect input.
 
 [Back to top](<#contents>)
 
-## User Experience (UX)
+# User Experience (UX)
 
 The 'Utility Control 3' application has a command line interface with a custom theme. The color scheme is selected in such a way as to be intuitive to the user and highlight: errors, successful input, selection menu, differences in selection options, the input that must be made for this selection, menu headings.
 
 [Back to top](<#contents>)
 
-### Site Structure
+## Site Structure
 
 The 'Utility Control 3' is a terminal based application that is being presented in a one page website. When the application starts the user will be presented with a short welcome message and a menu with 4 options. The menu consists of the utility choices: *electricity*, *broadband*, *food* and *gas*. Read more about the different choices in the [Features](<#features>) section.
 
@@ -62,7 +62,7 @@ In the top of the page there is also a 'Run Program' button that the user can us
 
 [Back to top](<#contents>)
 
-### Data Model
+## Data Model
 To store all data in the application I made a choice to use [Google Sheets](https://www.google.co.uk/sheets/about/). All data in the application is being sent and retrieved from the Google Sheet.
 
 <details><summary><b>Name of workbook: <i>codeinstitute-utility</i></b></summary>
@@ -100,25 +100,25 @@ The worksheet for utilitie with meter reading (*electricity*) holds 7 columns wi
 
 [Back to top](<#contents>)
 
-### Design Choices
+## Design Choices
 
-* #### Typography
+* ### Typography
     No specific typography is being used in the application. The font is just the standard font that is being used in the terminal.
 
-* #### Colour Scheme
+* ### Colour Scheme
     'Utility Control 3' is a terminal based application. I have used the [Rich](https://rich.readthedocs.io/en/stable/introduction.html) library for Python to be able to extend the design opportunities.
 
 ![Colour Palette image](readme/images/color-palette.png)
 
 [Back to top](<#contents>)
 
-## Features
+# Features
 
 When the application starts it prints the welcome message and brief description, then calls the *main* function which launches the main menu. As stated in the [Site Structure](<#site-structure>) area the application consists of 4 similar areas (different utilities): *electricity*, *broadband*, *food*, and *gas*. The features are being explained more in detail in the [Existing Features](<#existing-features>) area below.
 
-### Existing Features
+## Existing Features
 
-#### Main Menu
+### Main Menu
 The Main Menu is quite straight forward and consists of 4 choices. See each choice being explained below.
 
 <details><summary><b>Main Menu</b></summary>
@@ -128,7 +128,7 @@ The Main Menu is quite straight forward and consists of 4 choices. See each choi
 
 [Back to top](<#contents>)
 
-#### Action Menu
+### Action Menu
 The Action Menu is a submenu of Main Menu and its the same to all utilities except of the name of utility in the title. It consists of 4 different areas (functions) and an exit option: *add one row*, *delete last row*, *check statistics*, *see the table*, *go back*.
 
 <details><summary><b>Action Menu</b></summary>
@@ -138,7 +138,7 @@ The Action Menu is a submenu of Main Menu and its the same to all utilities exce
 
 [Back to top](<#contents>)
 
-#### Add one row
+### Add one row
 The add row to worksheet let's the user add new bill to the table. The user gets a description of the data that he is required to enter and immediately requires the first data to be entered. The required input data differs depending on the type of utility service. Date must be entered first. To help the user in the date input, the description displays the date of the previous input as well as the current date. Then the user needs to enter the meter reading, description also shows previous readings. If the utility does not provide meter readings, then this step is not displayed and is skipped. At last user needs to enter the price of utilitie, to help the user in the input, the price of the previous input is displayed.
 
 <details><summary><b>Add one row</b></summary>
@@ -148,12 +148,32 @@ The add row to worksheet let's the user add new bill to the table. The user gets
 
 [Back to top](<#contents>)
 
-#### Automatic input
+### Automatic input
 For more convenient use of the program, it is possible to enter the current date and the previous price without any input data by pressing the Enter button.
 
 <details><summary><b>Automatic input</b></summary>
 
-![Add one row](readme/images/add-one-row.png)
+![Automatic input](readme/images/automatic-input.png)
+</details><br/>
+
+[Back to top](<#contents>)
+
+### Data validation
+The previous data is shown to the user as an example of the input format. But if the input is incorrect, then the user will be shown a corresponding error and the need for input will be repeated until the user enters data in the required format.
+
+<details><summary><b>Date validation</b></summary>
+
+![Date validation](readme/images/validation-date.png)
+</details><br/>
+
+<details><summary><b>Meter reading validation</b></summary>
+
+![Meter reading validation](readme/images/validation-meter-reading.png)
+</details><br/>
+
+<details><summary><b>Price validation</b></summary>
+
+![Price validation](readme/images/validation-price.png)
 </details><br/>
 
 [Back to top](<#contents>)
