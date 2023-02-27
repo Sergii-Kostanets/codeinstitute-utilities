@@ -118,62 +118,43 @@ When the application starts it prints the welcome message and brief description,
 
 ### Existing Features
 
-### Main Menu
+#### Main Menu
 The Main Menu is quite straight forward and consists of 4 choices. See each choice being explained below.
 
 <details><summary><b>Main Menu</b></summary>
 
-![Main Menu](readme/assets/images/main_menu.png)
+![Main Menu](readme/images/main-menu.png)
 </details><br/>
 
-* #### Header
+[Back to top](<#contents>)
 
-  * The logo text is clickable with a link back to the home page for enhanced UX.
+#### Action Menu
+The Action Menu is a submenu of Main Menu and its the same to all utilities except of the name of utility in the title. It consists of 4 different areas (functions) and an exit option: *add one row*, *delete last row*, *check statistics*, *see the table*, *go back*.
 
-![Navigation bar image](assets/images/readme-images/navbar.png)
+<details><summary><b>Action Menu</b></summary>
+
+![Acrion Menu](readme/images/action-menu.png)
+</details><br/>
 
 [Back to top](<#contents>)
 
-* #### Buttons
+#### Add one row
+The add row to worksheet let's the user add new bill to the table. The user gets a description of the data that he is required to enter and immediately requires the first data to be entered. The required input data differs depending on the type of utility service. Date must be entered first. To help the user in the date input, the description displays the date of the previous input as well as the current date. Then the user needs to enter the meter reading, description also shows previous readings. If the utility does not provide meter readings, then this step is not displayed and is skipped. At last user needs to enter the price of utilitie, to help the user in the input, the price of the previous input is displayed.
 
-  * The player choices are under the heading of calling for choices, designed to be close to each other and not provoke accidental taps on the big screen.
+<details><summary><b>Add one row</b></summary>
 
-![Buttons image](assets/images/readme-images/buttons.png)
-
-[Back to top](<#contents>)
-
-* #### Main section
-
-    The main section consists of three blocks.
-  * On the left is a rule scheme that immediately changes to the symbol chosen by the player. Intuitively, it becomes clear that this is the choice of the player in the current round.
-  * In the middle is a block consisting of three parts.
-    * The number of points scored by the player. When the number of points reaches 10, the game ends with the player winning.
-    * The timer starts counting down the first time a player is selected. When the timer reaches zero, the game ends.
-    * The number of points scored by the computer. When the number of points reaches 10, the game ends with the player losing.
-  * On the right is a scheme with rules that changes by itself some time after the choice of a player in each round. It is intuitively clear that this is the choice of the computer.
-
-![Main section image](assets/images/readme-images/main-section.png)
+![Add one row](readme/images/add-one-row.png)
+</details><br/>
 
 [Back to top](<#contents>)
 
-* #### Information section
+#### Automatic input
+For more convenient use of the program, it is possible to enter the current date and the previous price without any input data by pressing the Enter button.
 
-  * At the beginning, three lines display the rules of the game.
-  * After the game starts, the first line displays the result of the round.
-  * After the start of the game, the second line explains the reason for winning or losing in accordance with the rules of the game.
+<details><summary><b>Automatic input</b></summary>
 
-![Request page image](assets/images/readme-images/information.png)
-
-[Back to top](<#contents>)
-
-* #### Footer
-
-  * Contains contacts of the author of the site.
-  * Contains social media links. To enhance the UX the links open in other tabs.
-  * The social media presence will help the user with their research of referencies and will also encourage them to connect with owner.
-  * The LinkedIn, Phone, GitHub and Instagram social links are there for the potential employers, to direct to the site owner's pages.
-
-![Footer image](assets/images/readme-images/footer.png)
+![Add one row](readme/images/add-one-row.png)
+</details><br/>
 
 [Back to top](<#contents>)
 
