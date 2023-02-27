@@ -46,7 +46,7 @@ def choose_utilitie():
     Calls the appropriate utility function based on the users selection.
     """
     while True:
-        console.print(" Main menu.\n", style="title")
+        console.print("\n Main menu.\n", style="title")
         console.print(" Enter 1 to manage 'electricity' worksheet.", style="choice")
         console.print(" Enter 2 to manage 'broadband' worksheet.", style="choice")
         console.print(" Enter 3 to manage 'food' worksheet.", style="choice")
@@ -99,7 +99,6 @@ def edit_worksheet(worksheet):
         elif option == '4':
             visualize(worksheet)
         elif option == '0':
-            print()
             main()
         else:
             console.print(" There is no such option. Retry your input.", style="error")
@@ -111,9 +110,10 @@ def statistics(worksheet):
     """
     while True:
         console.print(f"\n Select statistics from {worksheet} worksheet.\n", style="title")
-        console.print(" Enter 1 to show statistics 'at all'.", style="choice")
+        console.print(" Enter 1 to show statistics for 'all time'.", style="choice")
         console.print(" Enter 2 to show statistics for 'last month'.", style="choice")
         console.print(" Enter 3 to show statistics for 'last 3 months'.", style="choice")
+        console.print(" Enter 9 to go 'main menu'.", style="choice")
         console.print(" Enter 0 to go 'back'.", style="choice")
         option = input("\n Enter your choice:\n")
         if option == '1':
@@ -124,6 +124,8 @@ def statistics(worksheet):
         if option == '3':
             term = 91
             statistics_average_term(worksheet, term)
+        elif option == '9':
+            main()
         elif option == '0':
             edit_worksheet(worksheet)
         else:
@@ -501,8 +503,8 @@ def delete_last_row(worksheet):
     """
     while True:
         console.print(f"\n Are you sure you want to delete the last row in the {worksheet} worksheet?\n", style="title")
-        console.print(f" Enter '1' to confirm deletion of the last row on the {worksheet} worksheet.", style="choice")
-        console.print(" Enter '0' to cancel and go back.\n", style="choice")
+        console.print(f" Enter 1 to confirm deletion of the last row on the {worksheet} worksheet.", style="choice")
+        console.print(" Enter 0 to cancel and go back.\n", style="choice")
         confirm = input(" Enter your choice:\n")
         if confirm == '1':
             worksheet_del_last = SHEET.worksheet(worksheet)
@@ -516,6 +518,7 @@ def delete_last_row(worksheet):
                 console.print(" It is forbidden to delete the original information.", style="error")
                 edit_worksheet(worksheet)
         elif confirm == '0':
+            console.print(" Deleting last row cancelled.", style="success")
             edit_worksheet(worksheet)
         else:
             console.print(" There is no such option. Retry your input.", style="error")
@@ -527,5 +530,5 @@ console.print(" This program is designed to account for utilities.", style="desc
 console.print(" You can select a utility service and then the action you want", style="description")
 console.print(" to perform or view the information.\n", style="description")
 console.print(" To exit program, just close the tab.", style="description")
-console.print(" To restart program, click button above: 'Run program'.\n", style="description")
+console.print(" To restart program, click button above: 'Run program'.", style="description")
 main()
