@@ -399,7 +399,7 @@ def validate_price(value, last_price):
     try:
         if value == '':
             value = last_price
-            console.print(f" No date provided, entering last known price: {value}€.", style="success")
+            console.print(f" No data provided, entering last known price: {value}€.", style="success")
             return value
 
         float_value = round(float(value), 2)
