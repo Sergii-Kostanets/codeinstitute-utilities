@@ -46,7 +46,7 @@ def choose_utilitie():
     Calls the appropriate utility function based on the users selection.
     """
     while True:
-        console.print("\n Main menu.\n", style="title")
+        console.print("\n Main Menu\n", style="title")
         console.print(" Enter 1 to manage 'electricity' worksheet.", style="choice")
         console.print(" Enter 2 to manage 'broadband' worksheet.", style="choice")
         console.print(" Enter 3 to manage 'food' worksheet.", style="choice")
@@ -109,7 +109,7 @@ def statistics(worksheet):
     Shows statistics for relevant worksheet.
     """
     while True:
-        console.print(f"\n Select statistics from {worksheet} worksheet.\n", style="title")
+        console.print(f"\n Select statistics from {worksheet} worksheet\n", style="title")
         console.print(" Enter 1 to show statistics for 'all time'.", style="choice")
         console.print(" Enter 2 to show statistics for 'last month'.", style="choice")
         console.print(" Enter 3 to show statistics for 'last 3 months'.", style="choice")
