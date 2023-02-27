@@ -448,7 +448,7 @@ def validate_date(worksheet, value, last_date):
                 console.print(" Come back tomorrow.\n", style="description")
                 edit_worksheet(worksheet)
 
-            console.print(f" No date provided, entering today's date: {value}", style="success")
+            console.print(f" No data provided, entering today's date: {value}", style="success")
             return value
 
         date_value = datetime.strptime(value, date_format)
