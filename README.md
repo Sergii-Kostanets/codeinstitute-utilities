@@ -10,12 +10,10 @@
   * [Site Users Goal](<#site-users-goal>)
   * [User Stories](<#user-stories>)
   * [Site Owners Goal](<#site-owners-goal>)
-* [**User Experience (UX)**](<#user-experience-(ux)>)
+* [**User Experience (UX)**](<#user-experience-ux>)
   * [Site Structure](<#site-structure>)
   * [Data Model](<#data-model>)
   * [Design Choices](<#design-choices>)
-    * [Typography](<#typography>)
-    * [Colour Scheme](<#colour-scheme>)
 * [**Features**](<#features>)
   * [**Existing Features**](<#existing-features>)
     * [Main Menu](<#main-menu>)
@@ -26,9 +24,6 @@
     * [See the table](<#see-the-table>)
   * [**Future Features**](<#future-features>)
 * [**Technologies Used**](<#technologies-used>)
-  * [Languages](<#languages>)
-  * [Python Packages](<#python-packages>)
-  * [Frameworks, Libraries & Software](<#frameworks,-libraries-&-software>)
 * [**Testing**](<#testing>)
   * [**Functionality Testing**](<#functionality-testing>)
     * [User Stories Testing](<#user-stories-testing>)
@@ -47,8 +42,6 @@
   * [To fork the repository on GitHub](<#to-fork-the-repository-on-github>)
   * [To create a local clone of this project](<#to-create-a-local-clone-of-this-project>)
 * [**Credits**](<#credits>)
-  * [**Content**](<#content>)
-  * [**Media**](<#media>)
 * [**Acknowledgements**](<#acknowledgements>)
 
 # Project
@@ -523,6 +516,8 @@ The project was deployed to [Heroku](https://www.heroku.com). To deploy, please 
 
 The live link to the 'Utility Control 3' Github repository can be found [here](https://github.com/Sergii-Kostanets/codeinstitute-utilities).
 
+[Back to top](<#contents>)
+
 ## To fork the repository on GitHub
 
 A copy of the GitHub Repository can be made by forking the GitHub account. This copy can be viewed and changes can be made to the copy without affecting the original repository. Take the following steps to fork the repository;
@@ -532,13 +527,17 @@ A copy of the GitHub Repository can be made by forking the GitHub account. This 
 
 ![GitHub forking process image](readme/images/forking.png)
 
+[Back to top](<#contents>)
+
 ### To create a local clone of this project
 
 The method from cloning a project from GitHub is below:
 
 1. Under the repository’s name, click on the **code** tab.
 2. In the **Clone with HTTPS** section, click on the clipboard icon to copy the given URL.
+
 ![Cloning image](readme/images/clone.png)
+
 3. In your IDE of choice, open **Git Bash**.
 4. Change the current working directory to the location where you want the cloned directory to be made.
 5. Type **git clone**, and then paste the URL copied from GitHub.
