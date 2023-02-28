@@ -583,7 +583,7 @@ to delete the original information.", style="error")
             console.print(" There is no such option. \
 Retry your input.", style="error")
 
-# Program lunch
+# Program launch
 
 
 console.print("\n Welcome to 'Utility Control 3'!\n", style="title")
