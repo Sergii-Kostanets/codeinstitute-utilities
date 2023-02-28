@@ -178,6 +178,26 @@ The previous data is shown to the user as an example of the input format. But if
 
 [Back to top](<#contents>)
 
+### Delete last row
+The delete last row function is very straightforward. It displays a confirmation menu for deletion. If the user chooses '1', the last row is removed, and the user heads to the Action Menu. The user can also choose '0' to cancel the deletion and head back to the Action Menu.
+
+<details><summary><b>Delete last row</b></summary>
+
+![Delete last row](readme/images/delete-last-row.png)
+</details><br/>
+
+[Back to top](<#contents>)
+
+### Check statistics
+This function is a sub-menu where you can select one of three options for statistics for different periods of time and press '0' to return to the Action Menu or '9' to return to the Main Menu.
+
+<details><summary><b>Delete last row</b></summary>
+
+![Delete last row](readme/images/delete-last-row.png)
+</details><br/>
+
+[Back to top](<#contents>)
+
 ### Future Features
 
 * A registration to greet the user by name.
