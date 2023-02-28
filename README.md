@@ -340,6 +340,7 @@ The program starts automatically when you open the tab as expected.
 | ------------- | ----------------------------- | ---------------------------- | ----------------- |
 | Date validation | Enter the correct date in the correct format | Output a message about successful input | Works as expected |
 | Date validation | Enter the incorrect date in the correct format | Return the correct error message | Works as expected |
+| Date validation | Enter empty string | Input today's date | Works as expected |
 | Date validation | Enter something else | Return the correct error message | Works as expected |
 | Meter reading validation | Enter the number greater than the previous one in the correct format | Output a message about successful input | Works as expected |
 | Meter reading validation | Enter the number lower than the previous one in the correct format | Return the correct error message | Works as expected |
@@ -348,6 +349,7 @@ The program starts automatically when you open the tab as expected.
 | Price validation | Enter the number in the incorrect format | Return the correct error message | Works as expected |
 | Price validation | Enter zero | Return the correct error message | Works as expected |
 | Price validation | Enter negative number in the correct format | Return the correct error message | Works as expected |
+| Price validation | Enter empty string | Input previous price | Works as expected |
 | Price validation | Enter something else | Return the correct error message | Works as expected |
 
 [Back to top](<#contents>)
