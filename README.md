@@ -10,19 +10,29 @@
   * [Site Users Goal](<#site-users-goal>)
   * [User Stories](<#user-stories>)
   * [Site Owners Goal](<#site-owners-goal>)
-* [**User Experience UX**](<#user-experience-ux>)
+* [**User Experience (UX)**](<#user-experience-(ux)>)
   * [Site Structure](<#site-structure>)
+  * [Data Model](<#data-model>)
   * [Design Choices](<#design-choices>)
+    * [Typography](<#typography>)
+    * [Colour Scheme](<#colour-scheme>)
 * [**Features**](<#features>)
   * [**Existing Features**](<#existing-features>)
-    * [Header](<#header>)
-    * [Buttons](<#buttons>)
-    * [Main section](<#main-section>)
-    * [Information section](<#information-section>)
-    * [Footer](<#footer>)
+    * [Main Menu](<#main-menu>)
+    * [Action Menu](<#action-menu>)
+    * [Add one row](<#add-one-row>)
+    * [Automatic input](<#automatic-input>)
+    * [Data validation](<#data-validation>)
+    * [See the table](<#see-the-table>)
   * [**Future Features**](<#future-features>)
 * [**Technologies Used**](<#technologies-used>)
+  * [Languages](<#languages>)
+  * [Python Packages](<#python-packages>)
+  * [Frameworks, Libraries & Software](<#frameworks,-libraries-&-software>)
 * [**Testing**](<#testing>)
+  * [**Functionality Testing**](<#functionality-testing>)
+    * [User Stories Testing](<#user-stories-testing>)
+    * [Full Manual Testing](<#full-manual-testing>)
   * [**Code Validation**](<#code-validation>)
   * [**Responsivenes**](<#responsivenes>)
   * [**Browser Compatibility**](<#browser-compatibility>)
@@ -33,6 +43,9 @@
     * [Lighthouse](<#lighthouse>)
     * [Peer review](<#peer-review>)
 * [**Deployment**](<#deployment>)
+  * [Deployment To Heroku](<#deployment-to-heroku>)
+  * [To fork the repository on GitHub](<#to-fork-the-repository-on-github>)
+  * [To create a local clone of this project](<#to-create-a-local-clone-of-this-project>)
 * [**Credits**](<#credits>)
   * [**Content**](<#content>)
   * [**Media**](<#media>)
@@ -232,7 +245,7 @@ This function simply lists the table of utility by retrieving all data from the 
 
 [Back to top](<#contents>)
 
-### Future Features
+## Future Features
 
 * Add other type of storing (i.e. MySql or a JSON-file) to speed up the application.
 * Add other types of utility.
@@ -284,7 +297,7 @@ ID | Player stories | Requirement met |
 
 [Back to top](<#contents>)
 
-## Manual functional testing
+### Full Manual Testing
 
 The program starts automatically when you open the tab as expected.
 
@@ -302,7 +315,7 @@ The program starts automatically when you open the tab as expected.
 
 | **Feature**   | **Action**                    | **Expected Result**          | **Actual Result** |
 | ------------- | ----------------------------- | ---------------------------- | ----------------- |
-| Action Menu | Enter '1' | Data input request  | Works as expected |
+| Action Menu | Enter '1' | Data input request | Works as expected |
 | Action Menu | Enter '2' | Navigation to deletion confirmation menu | Works as expected |
 | Action Menu | Enter '3' | Navigation to Statistics Menu | Works as expected |
 | Action Menu | Enter '4' | Output of a relevant table | Works as expected |
@@ -313,45 +326,36 @@ The program starts automatically when you open the tab as expected.
 
 | **Feature**   | **Action**                    | **Expected Result**          | **Actual Result** |
 | ------------- | ----------------------------- | ---------------------------- | ----------------- |
-| Statistics Menu | Enter '1' | Data input request  | Works as expected |
-| Statistics Menu | Enter '2' | Navigation to deletion confirmation menu | Works as expected |
-| Statistics Menu | Enter '3' | Navigation to Statistics Menu | Works as expected |
-| Statistics Menu | Enter '4' | Output of a relevant table | Works as expected |
-| Statistics Menu | Enter '0' | Navigation to Main Menu | Works as expected |
+| Statistics Menu | Enter '1' | Relevant data output | Works as expected |
+| Statistics Menu | Enter '2' | Relevant data output | Works as expected |
+| Statistics Menu | Enter '3' | Relevant data output | Works as expected |
+| Statistics Menu | Enter '9' | Navigation to Main Menu | Works as expected |
+| Statistics Menu | Enter '0' | Navigation to Action Menu | Works as expected |
 | Statistics Menu | Enter something else | Return the correct error message | Works as expected |
 
-4. End of the game and game loop. Input/Output as expected. No bugs found.
-
-
-| **Feature**   | **Action**                    | **Expected Result**          | **Actual Result** |
-| ------------- | ----------------------------- | ---------------------------- | ----------------- |
-| Main screen | Select 'Play the Game again' | Navigate to Main screen | Works as expected |
-| Main screen | Select 'Exit' | Navigate to Exit page | Works as expected |
-| Main screen | Enter any symbol that is not 1 or 3 | Return the correct error message | Works as expected |
-
-![MT1](./MT-08.png)
-
-![MT1](./MT-09.png)
-
-
-5. Instructions / Rules. Input/Output as expected. No bugs found.
-
+4. Deletion Confirmation Menu. Input/Output as expected. No bugs found.
 
 | **Feature**   | **Action**                    | **Expected Result**          | **Actual Result** |
 | ------------- | ----------------------------- | ---------------------------- | ----------------- |
-| Rules | Select 'Play the Game' | Navigate to Main screen | Works as expected |
-| Rules | Select 'Exit' | Navigate to Exit page | Works as expected |
-| Rules | Enter any symbol that is not 1 or 3 | Return the correct error message | Works as expected |
+| Deletion Confirmation Menu | Enter '1' | Relevant data deletion | Works as expected |
+| Deletion Confirmation Menu | Enter '0' | Navigation to Action Menu | Works as expected |
+| Deletion Confirmation Menu | Enter something else | Return the correct error message | Works as expected |
 
-![MT1](./MT-10.png)
-
-
-6. Exit the game. Input/Output as expected. No bugs found.
-
+5. Data validation. Input/Output as expected. No bugs found.
 
 | **Feature**   | **Action**                    | **Expected Result**          | **Actual Result** |
 | ------------- | ----------------------------- | ---------------------------- | ----------------- |
-| Exit | Wait 5 secs | Navigate to Main screen | Works as expected |
+| Date validation | Enter the correct date in the correct format | Output a message about successful input | Works as expected |
+| Date validation | Enter the incorrect date in the correct format | Return the correct error message | Works as expected |
+| Date validation | Enter something else | Return the correct error message | Works as expected |
+| Meter reading validation | Enter the number greater than the previous one in the correct format | Output a message about successful input | Works as expected |
+| Meter reading validation | Enter the number lower than the previous one in the correct format | Return the correct error message | Works as expected |
+| Meter reading validation | Enter something else | Return the correct error message | Works as expected |
+| Price validation | Enter the number in the correct format | Output a message about successful input | Works as expected |
+| Price validation | Enter the number in the incorrect format | Return the correct error message | Works as expected |
+| Price validation | Enter zero | Return the correct error message | Works as expected |
+| Price validation | Enter negative number in the correct format | Return the correct error message | Works as expected |
+| Price validation | Enter something else | Return the correct error message | Works as expected |
 
 [Back to top](<#contents>)
 
@@ -528,7 +532,7 @@ A copy of the GitHub Repository can be made by forking the GitHub account. This 
 
 ![GitHub forking process image](readme/images/forking.png)
 
-### **To create a local clone of this project**
+### To create a local clone of this project
 
 The method from cloning a project from GitHub is below:
 
@@ -561,5 +565,3 @@ The method from cloning a project from GitHub is below:
 The application 'Utility Control 3' was completed as the Portfolio Project #3 (*Python*) for the Full Stack Software Development Diploma at the [Code Institute](https://codeinstitute.net/). I would like to thank my mentor [Precious Ijege](https://www.linkedin.com/in/precious-ijege-908a00168/), the Slack community, and all at the Code Institute for their help and support.
 
 [Sergii Kostanets](https://sergiikostanets.netlify.app/), February 2023.
-
-[Back to top](<#contents>)
