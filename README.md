@@ -200,9 +200,9 @@ The delete last row function is very straightforward. It displays a confirmation
 ### Check statistics
 This function is a sub-menu where you can select one of three options for statistics for different periods of time and press '0' to return to the Action Menu or '9' to return to the Main Menu.
 
-<details><summary><b>Statustics Menu</b></summary>
+<details><summary><b>Statistics Menu</b></summary>
 
-![Statustics Menu](readme/images/statistics-menu.png)
+![Statistics Menu](readme/images/statistics-menu.png)
 </details><br/>
 
 <details><summary><b>Statustics for all time</b></summary>
@@ -252,6 +252,8 @@ This function simply lists the table of utility by retrieving all data from the 
 * [Datetime](https://docs.python.org/3/library/datetime.html) - a module supplies classes for manipulating dates and times.
 * [Rich](https://rich.readthedocs.io/en/stable/introduction.html) - Rich is a Python library that makes command line applications visually more appealing.
 
+[Back to top](<#contents>)
+
 ## Frameworks, Libraries & Software
 
 * [Visual Studio Code](https://code.visualstudio.com/) - IDE used to develop the website.
@@ -264,121 +266,267 @@ This function simply lists the table of utility by retrieving all data from the 
 
 # Testing
 
+## Functionality Testing
+
+The functional final test was carried out. All works as expected.
+
+[Back to top](<#contents>)
+
+### User Stories Testing
+
+ID | Player stories | Requirement met |
+| - | --------- | --------------- |
+| 1 | As a user, I want to be able to add expense entries. | Yes | 
+| 2 | As a user, I want to be able to delete an expense entry in case of erroneous entries. | Yes | 
+| 3 | As a user, I want to have access to the function to calculate the statistics of the average consumption of funds for a communal service per day. | Yes |
+| 4 | As a user, I want to be able to view a table with all expense records. | Yes |
+| 5 | As a user, I want to have an easy way to return to the main menu. | Yes |
+
+[Back to top](<#contents>)
+
+## Manual functional testing
+
+The program starts automatically when you open the tab as expected.
+
+1. Main Menu. Input/Output as expected. No bugs found.
+
+| **Feature**   | **Action**                    | **Expected Result**          | **Actual Result** |
+| ------------- | ----------------------------- | ---------------------------- | ----------------- |
+| Main Menu | Enter '1' | Navigation to Action Menu of 'electricity' worksheet | Works as expected |
+| Main Menu | Enter '2' | Navigation to Action Menu of 'broadband' worksheet | Works as expected |
+| Main Menu | Enter '3' | Navigation to Action Menu of 'food' worksheet | Works as expected |
+| Main Menu | Enter '4' | Navigation to Action Menu of 'gas' worksheet | Works as expected |
+| Main Menu | Enter something else | Return the correct error message | Works as expected |
+
+2. Action Menu. Input/Output as expected. No bugs found.
+
+| **Feature**   | **Action**                    | **Expected Result**          | **Actual Result** |
+| ------------- | ----------------------------- | ---------------------------- | ----------------- |
+| Action Menu | Enter '1' | Data input request  | Works as expected |
+| Action Menu | Enter '2' | Navigation to deletion confirmation menu | Works as expected |
+| Action Menu | Enter '3' | Navigation to Statistics Menu | Works as expected |
+| Action Menu | Enter '4' | Output of a relevant table | Works as expected |
+| Action Menu | Enter '0' | Navigation to Main Menu | Works as expected |
+| Action Menu | Enter something else | Return the correct error message | Works as expected |
+
+3. Statistics Menu. Input/Output as expected. No bugs found.
+
+| **Feature**   | **Action**                    | **Expected Result**          | **Actual Result** |
+| ------------- | ----------------------------- | ---------------------------- | ----------------- |
+| Statistics Menu | Enter '1' | Data input request  | Works as expected |
+| Statistics Menu | Enter '2' | Navigation to deletion confirmation menu | Works as expected |
+| Statistics Menu | Enter '3' | Navigation to Statistics Menu | Works as expected |
+| Statistics Menu | Enter '4' | Output of a relevant table | Works as expected |
+| Statistics Menu | Enter '0' | Navigation to Main Menu | Works as expected |
+| Statistics Menu | Enter something else | Return the correct error message | Works as expected |
+
+4. End of the game and game loop. Input/Output as expected. No bugs found.
+
+
+| **Feature**   | **Action**                    | **Expected Result**          | **Actual Result** |
+| ------------- | ----------------------------- | ---------------------------- | ----------------- |
+| Main screen | Select 'Play the Game again' | Navigate to Main screen | Works as expected |
+| Main screen | Select 'Exit' | Navigate to Exit page | Works as expected |
+| Main screen | Enter any symbol that is not 1 or 3 | Return the correct error message | Works as expected |
+
+![MT1](./MT-08.png)
+
+![MT1](./MT-09.png)
+
+
+5. Instructions / Rules. Input/Output as expected. No bugs found.
+
+
+| **Feature**   | **Action**                    | **Expected Result**          | **Actual Result** |
+| ------------- | ----------------------------- | ---------------------------- | ----------------- |
+| Rules | Select 'Play the Game' | Navigate to Main screen | Works as expected |
+| Rules | Select 'Exit' | Navigate to Exit page | Works as expected |
+| Rules | Enter any symbol that is not 1 or 3 | Return the correct error message | Works as expected |
+
+![MT1](./MT-10.png)
+
+
+6. Exit the game. Input/Output as expected. No bugs found.
+
+
+| **Feature**   | **Action**                    | **Expected Result**          | **Actual Result** |
+| ------------- | ----------------------------- | ---------------------------- | ----------------- |
+| Exit | Wait 5 secs | Navigate to Main screen | Works as expected |
+
+[Back to top](<#contents>)
+
 ## Code Validation
 
-The [Rock-Paper-Scissors-Lizard-Spock Game](https://sergii-kostanets.github.io/codeinstitute-rock-paper-scissors-lizard-spock/) site has been throughly tested. All the code has been run through the [W3C HTML Validator](https://validator.w3.org/), the [W3C CSS Validator](https://jigsaw.w3.org/css-validator/) and the [JS hint Validator](https://jshint.com/). Minor errors were found. After a fix and retest, no errors were returned.
+'Utility Control 3' is a terminal based application, so there is no need for HTML or CSS validation. Python code was validated according to PEP8 using the [CI Python Linter](https://pep8ci.herokuapp.com/). Found errors have been corrected.
 
-The HTML validator results are below:
+<details><summary><b>PEP Validation Result</b></summary>
 
-![W3C HTML Validator test result](assets/images/readme-images/validate-html.png)
-
-The CSS validator results are below:
-
-![W3C CSS Validator test result](assets/images/readme-images/validate-css.jpeg)
-
-The JS validator results are below:
-
-![JS hint Validator test result](assets/images/readme-images/validate-js.png)
-
-There are loads of warnings, but no errors.
+![PEP Validation](readme/images/pep-validation.png)
+</details><br/>
 
 [Back to top](<#contents>)
 
-### Responsivenes
+## Responsivenes
 
-* The responsive design tests were carried out manually with [Google Chrome DevTools](https://developer.chrome.com/docs/devtools/) and [Am I Responsive](https://ui.dev/amiresponsive?url=https://sergii-kostanets.github.io/codeinstitute-photo-shoot-fans).
-
-    |        | Galaxy Fold | Galaxy A51 | iPhone 5 | iPad Air | iPad Mini | Display <1200px | Display >1200px |
-    |--------|-------------|------------|----------|----------|-----------|-----------------|-----------------|
-    | Render | pass        | pass       | pass     | pass     | pass      | pass            | pass            |
-    | Images | pass        | pass       | pass     | pass     | pass      | pass            | pass            |
-    | Links  | pass        | pass       | pass     | pass     | pass      | pass            | pass            |
+This project does not require responsive design.
 
 [Back to top](<#contents>)
 
-* Website [Rock-Paper-Scissors-Lizard-Spock Game](https://sergii-kostanets.github.io/codeinstitute-rock-paper-scissors-lizard-spock/) has fully responsive design which looks amazing on any device, from widescreen monitors to the smallest mobile phone screens.
+## Browser Compatibility
 
-    The responsiveness of the game:
-
-    ![Rock-Paper-Scissors-Lizard-Spock Game responsive design](assets/images/readme-images/responsive-design.png)
+'Utility Control 3' was tested on the following browsers with no visible issues for the user: Google Chrome, Opera, Microsoft Edge, Apple Safari and Mozilla Firefox. No visible or funcional issues on all browsers.
 
 [Back to top](<#contents>)
 
-### Browser Compatibility
+## Known Bugs
 
-[Rock-Paper-Scissors-Lizard-Spock Game](https://sergii-kostanets.github.io/codeinstitute-rock-paper-scissors-lizard-spock/) site was tested on the following browsers with no visible issues for the user.
-Google Chrome, Opera, Microsoft Edge, Safari and Mozilla Firefox. Appearance, functionality and responsiveness were consistent throughout for a range of device sizes and browsers.
+### Resolved
 
-[Back to top](<#contents>)
+The column containing the dates truncated the year digit.
 
-### Known Bugs
+<details><summary><b>Initial state</b></summary>
 
-* #### Resolved
+![Initial state](readme/images/bug-initial.png)
+</details><br/>
 
-  * Adding a timer prevented the scoring section from being hidden after the game ended. The countdown continued.
-    * Approach 1:
-    Taking the timer out of the scoring zone.
-    * Approach 2 (chosen):
-    Deleting rather than hiding a section: ```document.getElementById("timer").remove();```
+#### Approach 1:
 
-[Back to top](<#contents>)
+Adding ```no_wrap=False``` to the ```add_column``` function.
 
-* #### Unresolved
+<details><summary><b>No wrap</b></summary>
 
-  * If the buttons are pressed too quickly, the symbol selection button may be pressed again after the end of the last round. As a result, there may be a discrepancy between winning or losing a game with an explanation of the results of the last round that was played when it should not have been.
-    * Approach 1:
-    Removing the character selection buttons or replacing with text did not help. The button can still be pressed an additional time after the end of the game.
+![No wrap](readme/images/bug-no_wrap.png)
+</details><br/>
 
-[Back to top](<#contents>)
+#### Approach 2:
 
-### Additional Testing
+Adding ```overflow="fold"``` to the ```add_column``` function.
 
-#### Lighthouse
+<details><summary><b>Overflow fold</b></summary>
 
-The site was also tested using [Google Lighthouse](https://developers.google.com/web/tools/lighthouse) in Chrome Developer Tools to test each of the pages for:
+![Overflow fold](readme/images/bug-overflow-fold.png)
+</details><br/>
 
-* Performance - How the page performs whilst loading.
-* Accessibility - Is the site acccessible for all users and how can it be improved.
-* Best Practices - Site conforms to industry best practices.
-* SEO - Search engine optimisation. Is the site optimised for search engine result rankings.
+#### Approach 3:
 
-As an example the results for [Rock-Paper-Scissors-Lizard-Spock Game](https://sergii-kostanets.github.io/codeinstitute-rock-paper-scissors-lizard-spock/) main page:
+Building a table using [rich.box](https://rich.readthedocs.io/en/stable/appendix/box.html): ```table = Table(box=box.MINIMAL_DOUBLE_HEAD)```.
 
-![Lighthouse home page test results](assets/images/readme-images/lighthouse-home.png)
+<details><summary><b>Rich.box</b></summary>
 
-This part of the testing process showed up that the site was slow to load, mainly due to the image sizes. All the images needed to be compressed before adding to the repository. Once this was done the performance went from ~80% to ~100%.
+![Rich.box](readme/images/bug-rich.box.png)
+</details><br/>
 
-[Back to top](<#contents>)
+#### Approach 4 (chosen):
 
-#### Peer review
+Adding ```min_width=10``` to the ```add_column``` function.
 
-In addition to the above testing the beta version of the site was put through its paces by peers, both in the software development field and outside. The results highlighted responsive design weakness for a type of mobile device that was rectified with minor CSS amendments. There were also minor spelling and grammar errors that have since been fixed.
+<details><summary><b>Min width</b></summary>
+
+![Min width](readme/images/bug-min_width.png)
+</details><br/>
 
 [Back to top](<#contents>)
 
-## Deployment
+### Unresolved
 
-### **To deploy the project**
+Entering data too quickly can lead to unexpected results.
 
-The site was deployed to GitHub pages. The steps to deploy a site are as follows:
+#### Approach 1:
 
-  1. In the GitHub repository, navigate to the **Settings** tab.
-  2. Once in Settings, navigate to the **Pages** tab on the left hand side.
-  3. Under **Source**, select the branch to **main**, then click **save**.
-  4. Once the main branch has been selected, the page will be automatically refreshed with a detailed ribbon display to indicate the successful deployment.
+Add other type of storing (i.e. MySql or a JSON-file) to speed up information output.
 
-![GitHub pages deployed image](assets/images/readme-images/deployment.png)
+#### Approach 2:
 
-  The live link to the Github repository can be found [here](https://sergii-kostanets.github.io/codeinstitute-rock-paper-scissors-lizard-spock/).
+Add progress indicator and show it to the user while loading data.
 
-### **To fork the repository on GitHub**
+[Back to top](<#contents>)
+
+## Additional Testing
+
+### Lighthouse
+
+'Utility Control 3' is a terminal based application, so there is no need for Lighthouse testing.
+
+[Back to top](<#contents>)
+
+### Peer review
+
+In addition to the above testing the beta version of the site was put through its paces by peers, both in the software development field and outside. The results highlighted validation weakness, minor spelling and grammar errors that have since been fixed.
+
+[Back to top](<#contents>)
+
+# Deployment
+
+## Deployment To Heroku
+
+The project was deployed to [Heroku](https://www.heroku.com). To deploy, please follow the process below:
+
+1. The first step is to log in to Heroku (or create an account if needed).
+
+<details><summary><b>Heroku Step 1</b></summary>
+
+![Heroku Step 1](readme/images/heroku-step-1.png)
+</details><br />
+
+2. In the top right corner there is a button that is labeled 'New'. Click that and then select 'Create new app'.
+
+<details><summary><b>Heroku Step 2</b></summary>
+
+![Heroku Step 2](readme/images/heroku-step-2.png)
+</details><br />
+
+3. Now it's time to enter an application name that needs to be unique. When you have chose the name, choose your region and click 'Create app".
+
+<details><summary><b>Heroku Step 3</b></summary>
+
+![Heroku Step 3](readme/images/heroku-step-3.png)
+</details><br />
+
+4. On the next page, click the 'Settings' tab and find the "Config Vars" section. When you have found it, click "Reveal Config Vars". Now it's time to add values. In the 'Utility Control 3' case I needed to add two values. The first one was the credentials (KEY input field = "CREDS", VALUE input field = "your credentials", I have hid my credentials for security reasons), click the 'Add' button. Next you need to add another key, enter "PORT" in the KEY input field and "8000" in the VALUE field, click the 'Add' button.
+
+<details><summary><b>Heroku Step 4</b></summary>
+
+![Heroku Step 4](readme/images/heroku-step-4.png)
+</details><br />
+
+5. Next step is to add buildpacks to the application which will run when the application is deployed. The reason why this is needed is because all dependencies and configurations will be installed for the application. To do this you scroll down to the buildpacks section on the settings page and click the button 'Add buildpack'.
+
+<details><summary><b>Heroku Step 5</b></summary>
+
+![Heroku Step 5](readme/images/heroku-step-5.png)
+</details><br />
+
+6. Add "Python" and node.js". It is important that Python is listed above node.js. If it's not you can sort it by dragging and dropping.
+
+<details><summary><b>Heroku Step 6</b></summary>
+
+![Heroku Step 6](readme/images/heroku-step-6.png)
+</details><br />
+
+7. Now it's time for deployment. Scroll to the top of the settings page and click the 'Deploy' tab. For deployment method, select 'Github'. Search for the repository name you want to deploy and then click connect.
+
+<details><summary><b>Heroku Step 7</b></summary>
+
+![Heroku Step 7](readme/images/heroku-step-7.png)
+</details><br />
+
+8. Scroll down on the deploy page and choose deployment type. Choose to enable automatic deployments if you want to and then  click 'Deploy Branch'.
+
+<details><summary><b>Heroku Step 8</b></summary>
+
+![Heroku Step 8](readme/images/heroku-step-8.png)
+</details><br />
+
+The live link to the 'Utility Control 3' Github repository can be found [here](https://github.com/Sergii-Kostanets/codeinstitute-utilities).
+
+## To fork the repository on GitHub
 
 A copy of the GitHub Repository can be made by forking the GitHub account. This copy can be viewed and changes can be made to the copy without affecting the original repository. Take the following steps to fork the repository;
 
-1. Log in to **GitHub** and locate the [repository](https://github.com/Sergii-Kostanets/codeinstitute-rock-paper-scissors-lizard-spock).
+1. Log in to **GitHub** and locate the [repository](https://github.com/Sergii-Kostanets/codeinstitute-utilities).
 2. On the right hand side of the page inline with the repository name is a button called **'Fork'**, click on the button to create a copy of the original repository in your GitHub Account.
 
-![GitHub forking process image](assets/images/readme-images/forking.png)
+![GitHub forking process image](readme/images/forking.png)
 
 ### **To create a local clone of this project**
 
@@ -386,7 +534,7 @@ The method from cloning a project from GitHub is below:
 
 1. Under the repository’s name, click on the **code** tab.
 2. In the **Clone with HTTPS** section, click on the clipboard icon to copy the given URL.
-![Cloning image](assets/images/readme-images/clone.png)
+![Cloning image](readme/images/clone.png)
 3. In your IDE of choice, open **Git Bash**.
 4. Change the current working directory to the location where you want the cloned directory to be made.
 5. Type **git clone**, and then paste the URL copied from GitHub.
@@ -394,25 +542,24 @@ The method from cloning a project from GitHub is below:
 
 [Back to top](<#contents>)
 
-## Credits
+# Credits
 
-### Content
+## Content
 
-* The icons came from [Icon Library](https://icon-library.com/).
-* Rules image came from [PNG item](https://www.pngitem.com/middle/hJJoibm_rock-paper-scissors-lizard-spock-is-a-funny/).
-* Base structure, functionality and performance check came from a [Love Maths Walkthrough Project](https://learn.codeinstitute.net/courses/course-v1:CodeInstitute+LM101+2021_T1/courseware/2d651bf3f23e48aeb9b9218871912b2e/234519d86b76411aa181e76a55dabe70/).
-* As an example of a readme file was taken file of author [Ewan Colquhoun](https://github.com/EwanColquhoun/wawaswoods#readme)
+* All text content written by Sergii Kostanets.
+* Base structure and functionality came from a [Love Sandwiches Walkthrough Project](https://learn.codeinstitute.net/courses/course-v1:CodeInstitute+LS101+2021_T1/courseware/293ee9d8ff3542d3b877137ed81b9a5b/58d3e90f9a2043908c62f31e51c15deb/).
+* As an example of a readme file was taken file of author [Marcus Eriksson](https://github.com/worldofmarcus/project-portfolio-3#readme)
 
-### Media
+## Media
 
 * The photos were compressed using [I Love IMG](https://www.iloveimg.com/).
 
 [Back to top](<#contents>)
 
-## Acknowledgements
+# Acknowledgements
 
-The site was completed as a Portfolio 2 Project piece for the Full Stack Software Developer (e-Commerce) Diploma at the [Code Institute](https://codeinstitute.net/). As such I would like to thank my mentor [Precious Ijege](https://www.linkedin.com/in/precious-ijege-908a00168/), the Slack community, and all at the Code Institute for their help and support.
+The application 'Utility Control 3' was completed as the Portfolio Project #3 (*Python*) for the Full Stack Software Development Diploma at the [Code Institute](https://codeinstitute.net/). I would like to thank my mentor [Precious Ijege](https://www.linkedin.com/in/precious-ijege-908a00168/), the Slack community, and all at the Code Institute for their help and support.
 
-[Sergii Kostanets](https://sergiikostanets.netlify.app/), January 2023.
+[Sergii Kostanets](https://sergiikostanets.netlify.app/), February 2023.
 
 [Back to top](<#contents>)
