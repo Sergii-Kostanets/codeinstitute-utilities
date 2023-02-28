@@ -111,18 +111,18 @@ def statistics(worksheet):
     while True:
         console.print(f"\n Select statistics from {worksheet} worksheet\n", style="title")
         console.print(" Enter 1 to show statistics for 'all time'.", style="choice")
+        console.print(" Enter 2 to show statistics for 'last 3 months'.", style="choice")
         console.print(" Enter 2 to show statistics for 'last month'.", style="choice")
-        console.print(" Enter 3 to show statistics for 'last 3 months'.", style="choice")
         console.print(" Enter 9 to go 'main menu'.", style="choice")
         console.print(" Enter 0 to go 'back'.", style="choice")
         option = input("\n Enter your choice:\n")
         if option == '1':
             statistics_average_all(worksheet)
         if option == '2':
-            term = 30
+            term = 91
             statistics_average_term(worksheet, term)
         if option == '3':
-            term = 91
+            term = 30
             statistics_average_term(worksheet, term)
         elif option == '9':
             main()
