@@ -191,9 +191,9 @@ The delete last row function is very straightforward. It displays a confirmation
 ### Check statistics
 This function is a sub-menu where you can select one of three options for statistics for different periods of time and press '0' to return to the Action Menu or '9' to return to the Main Menu.
 
-<details><summary><b>Delete last row</b></summary>
+<details><summary><b>Statustics Menu</b></summary>
 
-![Delete last row](readme/images/delete-last-row.png)
+![Statustics Menu](readme/images/statistics-menu.png)
 </details><br/>
 
 [Back to top](<#contents>)

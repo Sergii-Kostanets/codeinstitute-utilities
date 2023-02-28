@@ -113,7 +113,7 @@ def statistics(worksheet):
         console.print(" Enter 1 to show statistics for 'all time'.", style="choice")
         console.print(" Enter 2 to show statistics for 'last 3 months'.", style="choice")
         console.print(" Enter 2 to show statistics for 'last month'.", style="choice")
-        console.print(" Enter 9 to go 'main menu'.", style="choice")
+        console.print(" Enter 9 to go to the 'main menu'.", style="choice")
         console.print(" Enter 0 to go 'back'.", style="choice")
         option = input("\n Enter your choice:\n")
         if option == '1':
